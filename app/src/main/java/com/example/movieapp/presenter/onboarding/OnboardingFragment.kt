@@ -1,11 +1,10 @@
 package com.example.movieapp.presenter.onboarding
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.movieapp.R
+import androidx.fragment.app.Fragment
 import com.example.movieapp.databinding.FragmentOnboardingBinding
 
 class OnboardingFragment : Fragment() {
