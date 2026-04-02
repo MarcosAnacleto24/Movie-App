@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">Movie App</string>
-   
-<!--    Onboarding Fragment-->
+
+    <!--    Onboarding Fragment-->
     <string name="onboarding_button">Iniciar</string>
+
+    <!--    HomeAuthFragment-->
+    <string name="title_home_auth_fragment">Entrar com</string>
+    <string name="button_continue_with_facebook_home_auth_fragment">Continuar com o Facebook</string>
+    <string name="button_continue_with_google_home_auth_fragment">Continuar com o Google</string>
+    <string name="text_social_or_password_home_auth_fragment">ou</string>
+    <string name="button_sign_in_with_password_home_auth_fragment">Entrar com senha</string>
+    <string name="text_not_have_an_account_home_auth_fragment">Não tem uma conta?</string>
+    <string name="text_sign_up_home_auth_fragment">Inscrever-se</string>
+
+
 </resources>
