@@ -13,5 +13,16 @@
     <string name="text_not_have_an_account_home_auth_fragment">Não tem uma conta?</string>
     <string name="text_sign_up_home_auth_fragment">Inscrever-se</string>
 
+    <!--    RegisterFragment-->
+    <string name="title_register_fragment">Crie sua conta</string>
+    <string name="text_hint_edit_email_register_fragment">Email</string>
+    <string name="text_hint_edit_password_register_fragment">Senha</string>
+    <string name="text_button_sign_up_register_fragment">Inscrever-se</string>
+    <string name="text_continue_social_network_register_fragment">ou continuar com</string>
+    <string name="text_already_account_register_fragment">já tem uma conta?</string>
+    <string name="text_button_sign_in_register_fragment">Entrar</string>
+    <string name="text_email_empty_register_fragment">Digite um e-mail válido</string>
+    <string name="text_password_empty_register_fragment">Digite uma senha</string>
+
 
 </resources>
