@@ -24,5 +24,13 @@
     <string name="text_email_empty_register_fragment">Digite um e-mail válido</string>
     <string name="text_password_empty_register_fragment">Digite uma senha</string>
 
+    <!--    LoginFragment-->
+    <string name="title_login_fragment">Faça login na sua conta</string>
+    <string name="text_hint_edit_email_login_fragment">Email</string>
+    <string name="text_hint_edit_password_login_fragment">Senha</string>
+    <string name="text_button_sign_in_login_fragment">Entrar</string>
+    <string name="text_forgot_password_login_fragment">Esqueceu a senha?</string>
+    <string name="text_continue_social_network_login_fragment">ou continuar com</string>
+
 
 </resources>
