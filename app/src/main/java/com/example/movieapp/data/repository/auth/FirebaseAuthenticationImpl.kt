@@ -2,9 +2,10 @@ package com.example.movieapp.data.repository.auth
 
 import com.example.movieapp.domain.repository.auth.FirebaseAuthentication
 import com.google.firebase.auth.FirebaseAuth
+import jakarta.inject.Inject
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-class FirebaseAuthenticationImpl(
+class FirebaseAuthenticationImpl @Inject constructor (
     private val firebaseAuth: FirebaseAuth
 ): FirebaseAuthentication  {
     override suspend fun login(email: String, password: String) {
