@@ -63,6 +63,17 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
+    // LiveData & ViewModel
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Navigation
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+
+    // Glide
+    implementation(libs.glide)
+
     //Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
