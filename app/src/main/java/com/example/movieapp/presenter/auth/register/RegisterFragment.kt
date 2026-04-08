@@ -13,7 +13,6 @@ import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentRegisterBinding
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.hideKeyboard
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +54,7 @@ class RegisterFragment : Fragment() {
 
         Glide.with(requireContext())
             .load(R.drawable.ic_loading)
-            .into(binding.progressLoading);
+            .into(binding.progressLoading)
     }
 
     private fun validateDate() {
