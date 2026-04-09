@@ -11,6 +11,9 @@ fun Fragment.hideKeyboard() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
         view.clearFocus()
     }
+}
 
-
+fun String.isEmailValid(): Boolean {
+    val emailPattern = Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
+    return emailPattern.matches(this)
 }

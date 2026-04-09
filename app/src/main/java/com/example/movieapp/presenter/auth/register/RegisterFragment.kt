@@ -13,6 +13,7 @@ import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentRegisterBinding
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.hideKeyboard
+import com.example.movieapp.util.isEmailValid
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +63,7 @@ class RegisterFragment : Fragment() {
         val password = binding.editPassword.text.toString()
 
         when {
-            email.isEmpty() -> ""
+            !email.isEmailValid() -> Toast.makeText(requireContext(), "Email inválido", Toast.LENGTH_SHORT).show()
             password.isEmpty() -> ""
 
             else -> {
