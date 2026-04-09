@@ -43,7 +43,7 @@ class LoginFragment : Fragment() {
 
     private fun initListeners() {
 
-        binding.toolbar2.setNavigationOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
 

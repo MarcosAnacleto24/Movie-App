@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.movieapp.databinding.ActivityMainBinding
-import com.example.movieapp.presenter.auth.login.LoginFragment
+import com.example.movieapp.presenter.auth.forgot.ForgotFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,11 +18,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val loginFragment = LoginFragment()
+        val forgotFragment = ForgotFragment()
 
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(binding.navHostFragment.id, loginFragment)
+        fragmentTransaction.replace(binding.navHostFragment.id, forgotFragment)
         fragmentTransaction.commit()
     }
 
