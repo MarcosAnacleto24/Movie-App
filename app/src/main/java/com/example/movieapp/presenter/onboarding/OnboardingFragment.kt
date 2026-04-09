@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentOnboardingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +32,8 @@ class OnboardingFragment : Fragment() {
 
         configureSpaseNavBar()
 
+        initListeners()
+
     }
 
     private fun configureSpaseNavBar() {
@@ -41,6 +45,16 @@ class OnboardingFragment : Fragment() {
 
             windowInsets
         }
+
+
+    }
+
+    private fun initListeners() {
+
+        binding.btnOnboarding.setOnClickListener {
+            findNavController().navigate(R.id.action_onboardingFragment_to_authentication)
+        }
+
     }
 
     override fun onDestroyView() {

@@ -53,6 +53,10 @@ class LoginFragment : Fragment() {
             validateDate()
         }
 
+        binding.btnForgot.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_forgotFragment)
+        }
+
         Glide.with(requireContext())
             .load(R.drawable.ic_loading)
             .into(binding.progressLoading)

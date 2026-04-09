@@ -144,13 +144,13 @@
             android:text="@string/text_not_have_an_account_home_auth_fragment"
             android:textColor="#9E9E9E"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/text_sign_up"
+            app:layout_constraintEnd_toStartOf="@+id/btn_register"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_password_login" />
 
         <TextView
-            android:id="@+id/text_sign_up"
+            android:id="@+id/btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
