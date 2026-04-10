@@ -13,6 +13,7 @@ import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentRegisterBinding
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.hideKeyboard
+import com.example.movieapp.util.initToolbar
 import com.example.movieapp.util.isEmailValid
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,17 +38,14 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initToolbar(binding.toolbar)
+
         initListeners()
 
 
     }
 
     private fun initListeners() {
-
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-
 
         binding.btnRegister.setOnClickListener {
             validateDate()
