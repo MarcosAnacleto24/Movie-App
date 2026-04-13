@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name=".presenter.MainActivity"
+            android:name=".presenter.main.activity.MainActivity"
             android:exported="false"/>
 
     </application>
