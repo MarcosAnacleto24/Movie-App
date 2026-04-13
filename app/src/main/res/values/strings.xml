@@ -1,6 +1,23 @@
 <resources>
     <string name="app_name">Movie App</string>
 
+    <!--    Generic-->
+    <string name="text_name_empty">Digite seu nome</string>
+    <string name="text_email_empty">Digite seu e-mail</string>
+    <string name="text_phone_empty">Digite seu telefone</string>
+    <string name="text_phone_invalid">Digite um telefone válido</string>
+    <string name="text_password_empty">Digite sua senha</string>
+    <string name="error_generic">Ocorreu um erro, por favor tente novamente mais tarde.</string>
+    <string name="text_formated_value">R$ %1$s</string>
+
+    <!--    Erros Firebase Authentication-->
+    <string name="account_not_register_or_password_invalid">E-mail ou senha inválidos. Por favor, verifique e tente novamente.</string>
+    <string name="email_invalid">O formato do e-mail digitado é inválido.</string>
+    <string name="this_email_used">Este e-mail já está em uso.</string>
+    <string name="enter_password_stronger">Sua senha é muito fraca. Use pelo menos 6 caracteres.</string>
+    <string name="error_register">Ocorreu um erro no registro. Tente novamente.</string>
+    <string name="error_user_not_found">Erro, usuário não autenticado.</string>
+
     <!--    Onboarding Fragment-->
     <string name="onboarding_button">Iniciar</string>
 
@@ -30,11 +47,15 @@
     <string name="text_hint_edit_password_login_fragment">Senha</string>
     <string name="text_button_sign_in_login_fragment">Entrar</string>
     <string name="text_forgot_password_login_fragment">Esqueceu a senha?</string>
+    <string name="text_email_empty_login_fragment">Digite um e-mail válido</string>
+    <string name="text_password_empty_login_fragment">Digite sua senha</string>
     <string name="text_continue_social_network_login_fragment">ou continuar com</string>
 
     <!--    ForgotFragment-->
     <string name="title_forgot_fragment">Crie sua nova senha</string>
     <string name="text_hint_edit_email_forgot_fragment">Email</string>
     <string name="text_button_forgot_fragment">Recuperar conta</string>
+    <string name="text_email_empty_forgot_fragment">Digite um e-mail válido</string>
+    <string name="text_email_sent_forgot_fragment">Um e-mail de recuperação de senha foi enviado para sua caixa de entrada, por favor verifique.</string>
 
 </resources>
