@@ -12,7 +12,6 @@ import com.example.movieapp.databinding.MovieItemBinding
 import com.example.movieapp.domain.model.Movie
 
 class MovieAdapter(
-    private val onClick: (Movie) -> Unit,
     private val context: Context
 ): ListAdapter<Movie, MovieAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
@@ -66,10 +65,10 @@ class MovieAdapter(
                  .into(binding.movieImg)
 
 
-            // Configura o clique para a tela de Detalhes
-            binding.root.setOnClickListener {
-                onClick(movie)
-            }
+//            // Configura o clique para a tela de Detalhes
+//            binding.root.setOnClickListener {
+//                onClick(movie)
+//            }
 
 
 
