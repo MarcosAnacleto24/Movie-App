@@ -64,8 +64,14 @@
     <string name="title_menu_favorite">Favorite</string>
     <string name="title_menu_download">Baixar</string>
     <string name="title_menu_profile">Perfil</string>
+
+    <!--    Genre Item-->
+    <string name="text_show_all_genre_item">Ver todos</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 
 </resources>
