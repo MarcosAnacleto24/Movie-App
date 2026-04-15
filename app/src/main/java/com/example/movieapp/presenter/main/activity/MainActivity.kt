@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
     }
 
     private fun initBottomNavigation(navController: NavController) {
