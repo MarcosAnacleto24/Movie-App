@@ -1,6 +1,7 @@
 package com.example.movieapp.presenter.main.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
@@ -38,10 +39,10 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.menu_home, R.id.menu_search, R.id.menu_download, R.id.menu_profile, R.id.menu_favorite -> {
-                    binding.bottomNav.visibility = android.view.View.VISIBLE
+                    binding.bottomNav.visibility = View.VISIBLE
                 }
                 else -> {
-                    binding.bottomNav.visibility = android.view.View.GONE
+                    binding.bottomNav.visibility = View.GONE
                 }
             }
         }
