@@ -18,7 +18,7 @@ interface ServiceApi {
      suspend fun getMovieByGenre(
          @Query("with_genres") genreId: Int?,
          @Query("language") language: String = "pt-br"
-     ): BasePaginationRemote<List<MovieResponse>>
+     ): BasePaginationRemote<MovieResponse>
 
 
 
