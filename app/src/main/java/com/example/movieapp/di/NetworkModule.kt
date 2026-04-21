@@ -36,7 +36,7 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor)
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request().url.newBuilder()
-                    .addQueryParameter("api_Key", BuildConfig.API_KEY)
+                    .addQueryParameter("api_key", BuildConfig.API_KEY)
                     .build()
                 val newRequest = chain.request().newBuilder().url(request).build()
                 chain.proceed(newRequest)
