@@ -1,14 +1,17 @@
 package com.example.movieapp.util
 
 import com.google.firebase.auth.FirebaseAuth
+import jakarta.inject.Inject
 
-object FirebaseHelper : IFirebaseHelper {
+class  FirebaseHelper @Inject constructor(
+    private val auth: FirebaseAuth
+) : IFirebaseHelper {
 
-    override fun getAuth() = FirebaseAuth.getInstance()
+    override fun getAuth() = auth
 
-    override fun isAuthenticated() = getAuth().currentUser != null
+    override fun isAuthenticated() = auth.currentUser != null
 
-    override fun getUserId() = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    override fun getUserId() = auth.currentUser?.uid ?: ""
 
 
 }
