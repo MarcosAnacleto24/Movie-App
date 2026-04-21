@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.adapter
+package com.example.movieapp.presenter.main.bottombar.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.search
+package com.example.movieapp.presenter.main.bottombar.search
 
 import android.os.Bundle
 import android.view.LayoutInflater

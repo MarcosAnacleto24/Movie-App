@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.home
+package com.example.movieapp.presenter.main.bottombar.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movieapp.databinding.FragmentHomeBinding
-import com.example.movieapp.presenter.main.adapter.GenreMovieAdapter
+import com.example.movieapp.presenter.main.bottombar.home.adapter.GenreMovieAdapter
 import com.example.movieapp.util.StateView
 import dagger.hilt.android.AndroidEntryPoint
 

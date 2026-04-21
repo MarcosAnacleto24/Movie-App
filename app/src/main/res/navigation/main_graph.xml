@@ -7,27 +7,27 @@
 
     <fragment
         android:id="@+id/menu_home"
-        android:name="com.example.movieapp.presenter.main.home.HomeFragment"
+        android:name="com.example.movieapp.presenter.main.bottombar.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/menu_search"
-        android:name="com.example.movieapp.presenter.main.search.SearchFragment"
+        android:name="com.example.movieapp.presenter.main.bottombar.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/menu_favorite"
-        android:name="com.example.movieapp.presenter.main.favorite.FavoriteFragment"
+        android:name="com.example.movieapp.presenter.main.bottombar.favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/menu_download"
-        android:name="com.example.movieapp.presenter.main.download.DownloadFragment"
+        android:name="com.example.movieapp.presenter.main.bottombar.download.DownloadFragment"
         android:label="fragment_download"
         tools:layout="@layout/fragment_download" />
     <fragment
         android:id="@+id/menu_profile"
-        android:name="com.example.movieapp.presenter.main.profile.ProfileFragment"
+        android:name="com.example.movieapp.presenter.main.bottombar.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
