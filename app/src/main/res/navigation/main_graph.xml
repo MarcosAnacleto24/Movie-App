@@ -9,7 +9,11 @@
         android:id="@+id/menu_home"
         android:name="com.example.movieapp.presenter.main.bottombar.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_menu_home_to_movieGenreFragment"
+            app:destination="@id/movieGenreFragment" />
+    </fragment>
     <fragment
         android:id="@+id/menu_search"
         android:name="com.example.movieapp.presenter.main.bottombar.search.SearchFragment"
@@ -30,4 +34,16 @@
         android:name="com.example.movieapp.presenter.main.bottombar.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/movieGenreFragment"
+        android:name="com.example.movieapp.presenter.main.moviegenre.MovieGenreFragment"
+        android:label="fragment_movie_genre"
+        tools:layout="@layout/fragment_movie_genre" >
+        <argument
+            android:name="genreId"
+            app:argType="integer" />
+        <argument
+            android:name="genreName"
+            app:argType="string" />
+    </fragment>
 </navigation>

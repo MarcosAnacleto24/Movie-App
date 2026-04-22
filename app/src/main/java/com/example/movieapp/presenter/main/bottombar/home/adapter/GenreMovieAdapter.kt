@@ -9,6 +9,7 @@ import com.example.movieapp.databinding.GenreItemBinding
 import com.example.movieapp.presenter.model.GenrePresentation
 
 class GenreMovieAdapter(
+    private val showAll: (Int, String) -> Unit
 ): ListAdapter<GenrePresentation, GenreMovieAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     companion object {
@@ -58,6 +59,12 @@ class GenreMovieAdapter(
             val movieAdapter = MovieAdapter(context = binding.root.context)
             binding.recyclerMovies.adapter = movieAdapter
             movieAdapter.submitList(genre.movies)
+
+            binding.textShowAll.setOnClickListener {
+                genre.id?.let { id ->
+                    showAll(id, genre.name ?: "")
+                }
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.bottombar.home
+package com.example.movieapp.presenter.main.moviegenre
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,27 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.movieapp.databinding.FragmentHomeBinding
-import com.example.movieapp.presenter.main.bottombar.home.adapter.GenreMovieAdapter
+import androidx.navigation.fragment.navArgs
+import com.example.movieapp.databinding.FragmentMovieGenreBinding
+import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
 import com.example.movieapp.util.StateView
+import com.example.movieapp.util.initToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
+class MovieGenreFragment : Fragment() {
+    private var _binding: FragmentMovieGenreBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val safeArgs: MovieGenreFragmentArgs by navArgs()
+    private val viewModel: MovieGenreViewModel by viewModels()
+    private lateinit var movieGenreAdapter: MovieGenreAdapter
 
-    private lateinit var genreMovieAdapter: GenreMovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentMovieGenreBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
@@ -34,46 +36,44 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initToolbar(binding.toolbar)
+
+        binding.textTitle.text = safeArgs.genreName
+
         configRecyclerView()
 
-        getGenres()
+        getMovies()
+
 
     }
 
-    private fun getGenres() {
-        viewModel.getGenres().observe(viewLifecycleOwner) { stateView ->
+    private fun getMovies() {
+        viewModel.getMoviesByGenre(safeArgs.genreId).observe(viewLifecycleOwner) { stateView ->
             when (stateView) {
                 is StateView.Loading -> {
 
                 }
 
                 is StateView.Success -> {
-
-                    stateView.data?.let { genres ->
-                        genreMovieAdapter.submitList(genres)
+                    stateView.data?.let { movies ->
+                        movieGenreAdapter.submitList(movies)
                     }
                 }
 
                 is StateView.Error -> {
 
-                    // Exibir mensagem de erro, por exemplo, usando um Toast
                 }
             }
         }
     }
 
-
     private fun configRecyclerView() {
 
-        genreMovieAdapter = GenreMovieAdapter {
-            genreId, genreName ->
-            val action = HomeFragmentDirections.actionMenuHomeToMovieGenreFragment(genreId, genreName)
-            findNavController().navigate(action)
-        }
+        movieGenreAdapter = MovieGenreAdapter(requireContext())
 
-        with(binding.rvHome) {
+        with(binding.rvMovieGenre) {
             setHasFixedSize(true)
-            adapter = genreMovieAdapter
+            adapter = movieGenreAdapter
         }
     }
 
