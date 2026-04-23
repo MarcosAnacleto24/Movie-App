@@ -69,29 +69,29 @@ class MovieGenreFragment : Fragment() {
 
         configRecyclerView()
 
-        getMovies()
+        getMoviesByGenre()
 
         initSearchView()
 
 
     }
 
-    private fun getMovies() {
+    private fun getMoviesByGenre() {
         viewModel.getMoviesByGenre(safeArgs.genreId).observe(viewLifecycleOwner) { stateView ->
             when (stateView) {
                 is StateView.Loading -> {
+                    binding.rvMovieGenre.visibility = View.GONE
                     binding.shimmerViewContainer.visibility = View.VISIBLE
                     binding.shimmerViewContainer.startShimmer()
-                    binding.rvMovieGenre.visibility = View.GONE
                 }
 
                 is StateView.Success -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
-                    binding.rvMovieGenre.visibility = View.VISIBLE
                     stateView.data?.let { movies ->
                         movieGenreAdapter.submitList(movies)
                     }
+                    binding.rvMovieGenre.visibility = View.VISIBLE
                 }
 
                 is StateView.Error -> {
@@ -114,6 +114,7 @@ class MovieGenreFragment : Fragment() {
 
     private fun initSearchView() {
         binding.simpleSearchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String): Boolean {
                 hideKeyboard()
                 if (query.isNotEmpty()) {
@@ -132,25 +133,51 @@ class MovieGenreFragment : Fragment() {
 
 
         })
+
+        binding.simpleSearchView.setOnSearchViewListener(object : SimpleSearchView.SearchViewListener {
+            override fun onSearchViewClosed() {
+                getMoviesByGenre()
+            }
+
+            override fun onSearchViewClosedAnimation() {
+                // Não é necessário implementar nada aqui por enquanto
+            }
+
+            override fun onSearchViewShown() {
+                // Não é necessário implementar nada aqui por enquanto
+            }
+
+            override fun onSearchViewShownAnimation() {
+                // Não é necessário implementar nada aqui por enquanto
+            }
+
+        })
+
     }
 
     private fun getMovies(query: String) {
         viewModel.searchMovies(query).observe(viewLifecycleOwner) { stateView ->
             when (stateView) {
                 is StateView.Loading -> {
+                    binding.shimmerViewContainer.visibility = View.VISIBLE
+                    binding.shimmerViewContainer.startShimmer()
                     binding.rvMovieGenre.visibility = View.GONE
                 }
 
                 is StateView.Success -> {
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
+                    binding.rvMovieGenre.visibility = View.VISIBLE
                     stateView.data?.let { movies ->
                         movieGenreAdapter.submitList(movies)
                     }
-                    binding.rvMovieGenre.visibility = View.VISIBLE
+
 
                 }
 
                 is StateView.Error -> {
-
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
                 }
             }
         }
