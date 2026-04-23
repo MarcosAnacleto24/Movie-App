@@ -9,7 +9,8 @@ import com.example.movieapp.databinding.GenreItemBinding
 import com.example.movieapp.presenter.model.GenrePresentation
 
 class GenreMovieAdapter(
-    private val showAll: (Int, String) -> Unit
+    private val showAll: (Int, String) -> Unit,
+    private val onClick: (id: Int?) -> Unit
 ): ListAdapter<GenrePresentation, GenreMovieAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     companion object {
@@ -56,7 +57,10 @@ class GenreMovieAdapter(
 
             binding.genreName.text = genre.name
 
-            val movieAdapter = MovieAdapter(context = binding.root.context)
+            val movieAdapter = MovieAdapter(
+                context = binding.root.context,
+                onClick = onClick
+            )
             binding.recyclerMovies.adapter = movieAdapter
             movieAdapter.submitList(genre.movies)
 
