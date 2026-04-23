@@ -9,4 +9,7 @@ interface MovieRepository {
     suspend fun getGenres(): List<GenrePresentation>
 
     suspend fun getMoviesByGenre(genreId: Int): Pagination<Movie>
+
+    suspend fun searchMovies(query: String): Pagination<Movie>
+
 }

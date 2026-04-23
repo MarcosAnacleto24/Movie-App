@@ -25,4 +25,10 @@ class MovieRepositoryImpl @Inject constructor(
         // Usa o Mapper para converter o envelope de paginação e a lista de filmes
         return response.toDomain()
     }
+
+    override suspend fun searchMovies(query: String): Pagination<Movie> {
+        val response = serviceApi.searchMovies(query = query)
+        return response.toDomain()
+    }
+
 }

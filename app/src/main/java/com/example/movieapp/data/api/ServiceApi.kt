@@ -20,6 +20,12 @@ interface ServiceApi {
          @Query("language") language: String = "pt-br"
      ): BasePaginationRemote<MovieResponse>
 
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("language") language: String = "pt-br",
+        @Query("query") query: String?
+    ): BasePaginationRemote<MovieResponse>
+
 
 
 

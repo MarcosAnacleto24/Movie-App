@@ -44,10 +44,15 @@ class HomeFragment : Fragment() {
         viewModel.getGenres().observe(viewLifecycleOwner) { stateView ->
             when (stateView) {
                 is StateView.Loading -> {
-
+                    binding.shimmerViewContainer.visibility = View.VISIBLE
+                    binding.shimmerViewContainer.startShimmer()
+                    binding.rvHome.visibility = View.GONE
                 }
 
                 is StateView.Success -> {
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
+                    binding.rvHome.visibility = View.VISIBLE
 
                     stateView.data?.let { genres ->
                         genreMovieAdapter.submitList(genres)
@@ -55,8 +60,8 @@ class HomeFragment : Fragment() {
                 }
 
                 is StateView.Error -> {
-
-                    // Exibir mensagem de erro, por exemplo, usando um Toast
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
                 }
             }
         }

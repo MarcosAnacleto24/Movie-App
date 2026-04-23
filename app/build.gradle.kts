@@ -86,6 +86,12 @@ dependencies {
     // Glide
     implementation(libs.glide)
 
+    //SimpleSearchView
+    implementation(libs.simplesearchview)
+
+    //Facebook Shimmer
+    implementation(libs.shimmer)
+
     //Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
