@@ -12,7 +12,9 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieGenreBinding
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
@@ -104,7 +106,14 @@ class MovieGenreFragment : Fragment() {
 
     private fun configRecyclerView() {
 
-        movieGenreAdapter = MovieGenreAdapter(requireContext())
+        movieGenreAdapter = MovieGenreAdapter(requireContext()) { movieId ->
+
+            movieId?.let {
+                val action = MainGraphDirections.actionGlobalMovieDetailsFragment(movieId)
+                findNavController().navigate(action)
+            }
+
+        }
 
         with(binding.rvMovieGenre) {
             setHasFixedSize(true)

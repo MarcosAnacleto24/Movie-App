@@ -13,7 +13,8 @@ import com.example.movieapp.databinding.MovieItemBinding
 import com.example.movieapp.domain.model.Movie
 
 class MovieGenreAdapter(
-    private val context: Context
+    private val context: Context,
+    private val onClick: (id: Int?) -> Unit
 ): ListAdapter<Movie, MovieGenreAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     companion object {
@@ -66,10 +67,10 @@ class MovieGenreAdapter(
                  .into(binding.movieImg)
 
 
-//            // Configura o clique para a tela de Detalhes
-//            binding.root.setOnClickListener {
-//                onClick(movie)
-//            }
+            // Configura o clique para a tela de Detalhes
+            binding.root.setOnClickListener {
+                onClick(movie.id)
+            }
 
 
 
