@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Movie App</string>
 
+    <!--    TabLayout-->
+    <string name="title_trailers_tab_layout">Trailers</string>
+    <string name="title_similar_tab_layout">Similares</string>
+    <string name="title_comments_tab_layout">Comentários</string>
+
     <!--    Generic-->
     <string name="text_name_empty">Digite seu nome</string>
     <string name="text_email_empty">Digite seu e-mail</string>
