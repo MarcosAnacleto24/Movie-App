@@ -10,8 +10,8 @@ data class MovieResponse(
     @SerializedName("backdrop_path")
     val backdropPath: String?,
 
-    @SerializedName("genre_ids")
-    val genreIds: List<Int>?,
+    @SerializedName("genres")
+    val genres: List<GenreResponse>?,
 
     @SerializedName("id")
     val id: Int?,
@@ -44,5 +44,8 @@ data class MovieResponse(
     val voteAverage: Float?,
 
     @SerializedName("vote_count")
-    val voteCount: Int?
+    val voteCount: Int?,
+
+    @SerializedName("production_countries")
+    val productionCountries: List<CountryResponse>?
 )

@@ -1,6 +1,7 @@
 package com.example.movieapp.data.api
 
 import com.example.movieapp.data.model.BasePaginationRemote
+import com.example.movieapp.data.model.CreditResponse
 import com.example.movieapp.data.model.GenresResponse
 import com.example.movieapp.data.model.MovieResponse
 import retrofit2.http.GET
@@ -32,6 +33,11 @@ interface ServiceApi {
         @Query("language") language: String = "pt-br",
     ): MovieResponse
 
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int?,
+        @Query("language") language: String = "pt-br",
+    ): CreditResponse
 
 
 

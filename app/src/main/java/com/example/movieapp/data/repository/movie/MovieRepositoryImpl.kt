@@ -31,10 +31,4 @@ class MovieRepositoryImpl @Inject constructor(
         return response.toDomain()
     }
 
-    override suspend fun getMovieDetails(movieId: Int): Movie {
-        val response = serviceApi.getMovieDetails(movieId)
-
-        return response.toDomain()
-    }
-
 }

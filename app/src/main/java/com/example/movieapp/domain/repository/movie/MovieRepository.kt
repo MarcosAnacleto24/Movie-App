@@ -12,6 +12,4 @@ interface MovieRepository {
 
     suspend fun searchMovies(query: String): Pagination<Movie>
 
-    suspend fun getMovieDetails(movieId: Int): Movie
-
 }

@@ -11,9 +11,12 @@ import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.presenter.main.movie_details.adapter.CastAdapter
 import com.example.movieapp.util.StateView
+import com.example.movieapp.util.formatDate
 import com.example.movieapp.util.initToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
@@ -22,6 +25,8 @@ class MovieDetailsFragment : Fragment() {
 
     private val viewModel: MovieDetailsViewModel by viewModels()
     private val safeArgs: MovieDetailsFragmentArgs by navArgs()
+
+    private lateinit var castAdapter: CastAdapter
 
 
     override fun onCreateView(
@@ -40,6 +45,8 @@ class MovieDetailsFragment : Fragment() {
         initToolbar(binding.toolbar)
 
         getMovieDetails()
+
+        initRecyclerCredits()
 
     }
 
@@ -64,6 +71,37 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    private fun initRecyclerCredits() {
+
+        castAdapter = CastAdapter()
+
+        with(binding.recyclerCast) {
+            setHasFixedSize(true)
+            adapter = castAdapter
+        }
+    }
+
+    private fun getMovieCredits() {
+        viewModel.getMovieCredits(safeArgs.movieId).observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+                    stateView.data?.let {
+                        castAdapter.submitList(it.cast)
+                    }
+
+                }
+
+                is StateView.Error -> {
+
+                }
+            }
+        }
+    }
+
     private fun configData(movie: Movie) {
 
         Glide.with(requireContext())
@@ -74,6 +112,19 @@ class MovieDetailsFragment : Fragment() {
 
         binding.txtTitle.text = movie.title
 
+        binding.textVoteAverage.text = String.format(Locale.getDefault(), "%.1f", movie.voteAverage)
+
+        binding.textProductionCountry.text = movie.productionCompanies?.firstOrNull()?.name ?: ""
+
+        binding.textYear.text = movie.releaseDate?.formatDate()
+
+        val genres = movie.genres?.joinToString(", ") { it.name.toString() } ?: ""
+
+        binding.textGenres.text = getString(R.string.text_genres_movie_detail_fragment, genres)
+
+        binding.textDescription.text = movie.overview
+
+        getMovieCredits()
     }
 
     override fun onDestroyView() {

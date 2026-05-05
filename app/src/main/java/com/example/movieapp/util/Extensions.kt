@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.movieapp.R
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 fun Fragment.hideKeyboard() {
     val view = activity?.currentFocus
@@ -37,4 +39,18 @@ fun Fragment.initToolbar(toolbar: Toolbar, showIconNavigation: Boolean = false) 
 
 fun Fragment.showSnackBar(message: Int, duration: Int = Snackbar.LENGTH_SHORT) {
     view?.let { Snackbar.make(it, message, duration).show() }
+}
+
+fun String.formatDate(): String? {
+    return try {
+        // Formato que vem da API NewsAPI
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        // Formato brasileiro que queremos exibir
+        val outputFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+
+        val date = inputFormat.parse(this)
+        date?.let { outputFormat.format(it) }
+    } catch (_: Exception) {
+        this // Se der erro, retorna o texto original para não quebrar o app
+    }
 }
