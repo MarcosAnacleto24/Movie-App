@@ -1,5 +1,6 @@
 package com.example.movieapp.presenter.main.movie_details
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.movieapp.domain.usecase.movie.GetMovieCreditsUseCase
@@ -15,6 +16,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase
 ): ViewModel()
 {
+    private val _movieId = MutableLiveData<Int>()
+    val movieId: MutableLiveData<Int> = _movieId
     fun getMovieDetails(movieId: Int) = liveData(Dispatchers.IO)  {
         try {
             emit(StateView.Loading())
@@ -47,5 +50,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-
+    fun setMovieId(movieId: Int) {
+        _movieId.value = movieId
+    }
 }

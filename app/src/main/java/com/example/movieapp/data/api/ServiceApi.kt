@@ -39,6 +39,12 @@ interface ServiceApi {
         @Query("language") language: String = "pt-br",
     ): CreditResponse
 
+    @GET("movie/{movie_id}/similar")
+    suspend fun getSimilar(
+        @Path("movie_id") movieId: Int?,
+        @Query("language") language: String = "pt-br",
+    ):  BasePaginationRemote<MovieResponse>
+
 
 
 
