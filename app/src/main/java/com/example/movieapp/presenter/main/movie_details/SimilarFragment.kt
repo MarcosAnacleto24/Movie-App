@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentSimilarBinding
 import com.example.movieapp.presenter.main.movie_details.adapter.MovieSimilarAdapter
 import com.example.movieapp.util.StateView
@@ -48,8 +50,12 @@ class SimilarFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        movieSimilarAdapter = MovieSimilarAdapter(requireContext()) {
-            // Handle click event, e.g., navigate to movie details
+        movieSimilarAdapter = MovieSimilarAdapter(requireContext()) { movieId ->
+
+            movieId?.let {
+                val action = MainGraphDirections.actionGlobalMovieDetailsFragment(movieId)
+                findNavController().navigate(action)
+            }
         }
 
 

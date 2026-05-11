@@ -61,9 +61,9 @@ class MovieDetailsFragment : Fragment() {
         val viewPagerAdapter = ViewPagerAdapter(requireActivity())
         binding.viewPager.adapter = viewPagerAdapter
 
-            viewPagerAdapter.addFragment(TrailersFragment(), R.string.title_trailers_tab_layout)
-            viewPagerAdapter.addFragment(SimilarFragment(), R.string.title_similar_tab_layout)
-            viewPagerAdapter.addFragment(CommentsFragment(), R.string.title_comments_tab_layout)
+        viewPagerAdapter.addFragment(TrailersFragment(), R.string.title_trailers_tab_layout)
+        viewPagerAdapter.addFragment(SimilarFragment(), R.string.title_similar_tab_layout)
+        viewPagerAdapter.addFragment(CommentsFragment(), R.string.title_comments_tab_layout)
 
         binding.viewPager.offscreenPageLimit = viewPagerAdapter.itemCount
 
