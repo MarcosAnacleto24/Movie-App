@@ -1,16 +1,20 @@
 package com.example.movieapp.data.mapper
 
+import com.example.movieapp.data.model.AuthorDetailsResponse
 import com.example.movieapp.data.model.BasePaginationRemote
 import com.example.movieapp.data.model.CountryResponse
 import com.example.movieapp.data.model.CreditResponse
 import com.example.movieapp.data.model.GenreResponse
 import com.example.movieapp.data.model.GenresResponse
 import com.example.movieapp.data.model.MovieResponse
+import com.example.movieapp.data.model.MovieReviewResponse
 import com.example.movieapp.data.model.PersonResponse
+import com.example.movieapp.domain.model.AuthorDetails
 import com.example.movieapp.domain.model.Country
 import com.example.movieapp.domain.model.Credit
 import com.example.movieapp.domain.model.Genre
 import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.MovieReview
 import com.example.movieapp.domain.model.Pagination
 import com.example.movieapp.domain.model.Person
 import com.example.movieapp.presenter.model.GenrePresentation
@@ -93,5 +97,26 @@ fun PersonResponse.toDomain(): Person {
 fun CreditResponse.toDomain(): Credit {
     return Credit(
         cast = this.cast?.map { it.toDomain() }
+    )
+}
+
+fun AuthorDetailsResponse.toDomain(): AuthorDetails {
+    return AuthorDetails(
+        name = this.name,
+        username = this.username,
+        avatarPath = "https://image.tmdb.org/t/p/w500${this.avatarPath}",
+        rating = this.rating
+    )
+}
+
+fun MovieReviewResponse.toDomain(): MovieReview {
+    return MovieReview(
+        author = this.author,
+        authorDetails = this.authorDetails?.toDomain(),
+        content = this.content,
+        createdAt = this.createdAt,
+        id = this.id,
+        updatedAt = this.updatedAt,
+        url = this.url
     )
 }
