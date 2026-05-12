@@ -7,16 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.domain.model.Movie
-import com.example.movieapp.presenter.main.moviedetails.similar.SimilarFragment
 import com.example.movieapp.presenter.main.moviedetails.Trailers.TrailersFragment
 import com.example.movieapp.presenter.main.moviedetails.adapter.CastAdapter
 import com.example.movieapp.presenter.main.moviedetails.adapter.ViewPagerAdapter
 import com.example.movieapp.presenter.main.moviedetails.comments.CommentsFragment
+import com.example.movieapp.presenter.main.moviedetails.similar.SimilarFragment
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.ViewPager2ViewHeightAnimator
 import com.example.movieapp.util.formatDate
