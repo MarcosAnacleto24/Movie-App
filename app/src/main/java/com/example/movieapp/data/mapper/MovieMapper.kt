@@ -104,7 +104,7 @@ fun AuthorDetailsResponse.toDomain(): AuthorDetails {
     return AuthorDetails(
         name = this.name,
         username = this.username,
-        avatarPath = "https://image.tmdb.org/t/p/w500${this.avatarPath}",
+        avatarPath = this.avatarPath,
         rating = this.rating
     )
 }
@@ -118,5 +118,15 @@ fun MovieReviewResponse.toDomain(): MovieReview {
         id = this.id,
         updatedAt = this.updatedAt,
         url = this.url
+    )
+}
+
+
+fun BasePaginationRemote<MovieReviewResponse>.toReviewDomain(): Pagination<MovieReview> {
+    return Pagination(
+        page = this.page,
+        totalPages = this.totalPages,
+        totalResults = this.totalResults,
+        results = this.results?.map { it.toDomain() }
     )
 }

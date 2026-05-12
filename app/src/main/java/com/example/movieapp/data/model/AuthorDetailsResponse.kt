@@ -1,17 +1,17 @@
 package com.example.movieapp.data.model
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 
 data class AuthorDetailsResponse(
-    @SerialName("name")
+    @SerializedName("name")
     val name: String?,
 
-    @SerialName("username")
+    @SerializedName("username")
     val username: String?,
 
-    @SerialName("avatar_path")
+    @SerializedName("avatar_path")
     val avatarPath: String?,
 
-    @SerialName("rating")
+    @SerializedName("rating")
     val rating: Int?
 )

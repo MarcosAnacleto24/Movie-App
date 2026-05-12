@@ -1,13 +1,18 @@
 package com.example.movieapp.util
 
 import android.content.Context
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.example.movieapp.R
+import com.example.movieapp.presenter.main.moviedetails.adapter.ViewPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 fun Fragment.hideKeyboard() {
@@ -54,3 +59,35 @@ fun String.formatDate(): String? {
         this // Se der erro, retorna o texto original para não quebrar o app
     }
 }
+
+fun formatCommentDate(date: String?): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+    val providedDate = date?.let { dateFormat.parse(it) }
+    val currentDate = Date()
+
+    val calendarProvided = Calendar.getInstance()
+    val calendarCurrent = Calendar.getInstance()
+    providedDate?.let { calendarProvided.time = it }
+    calendarCurrent.time = currentDate
+
+    val yearDifference = calendarCurrent.get(Calendar.YEAR) - calendarProvided.get(Calendar.YEAR)
+    val monthDifference = calendarCurrent.get(Calendar.MONTH) - calendarProvided.get(Calendar.MONTH)
+    val dayDifference = calendarCurrent.get(Calendar.DAY_OF_MONTH) - calendarProvided.get(Calendar.DAY_OF_MONTH)
+
+    val totalDaysDifference = yearDifference * 365 + monthDifference * 30 + dayDifference
+
+    return when {
+        totalDaysDifference == 0 -> "Hoje"
+        totalDaysDifference == 1 -> "Ontem"
+        totalDaysDifference < 31 -> "$totalDaysDifference dias atrás"
+        else -> {
+            val monthsDifference = totalDaysDifference / 30
+            if (monthsDifference == 1) {
+                "1 mês atrás"
+            } else {
+                "$monthsDifference meses atrás"
+            }
+        }
+    }
+}
+

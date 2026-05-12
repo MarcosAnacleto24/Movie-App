@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.movie_details
+package com.example.movieapp.presenter.main.moviedetails.Trailers
 
 import android.os.Bundle
 import android.view.LayoutInflater

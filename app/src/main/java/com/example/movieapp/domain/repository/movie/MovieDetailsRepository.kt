@@ -2,6 +2,7 @@ package com.example.movieapp.domain.repository.movie
 
 import com.example.movieapp.domain.model.Credit
 import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.MovieReview
 import com.example.movieapp.domain.model.Pagination
 
 interface MovieDetailsRepository {
@@ -11,5 +12,7 @@ interface MovieDetailsRepository {
     suspend fun getMovieCredits(movieId: Int): Credit
 
     suspend fun getSimilar(movieId: Int): Pagination<Movie>
+
+    suspend fun getReviews(movieId: Int): Pagination<MovieReview>
 
 }

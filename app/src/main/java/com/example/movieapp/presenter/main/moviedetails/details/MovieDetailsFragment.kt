@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.movie_details
+package com.example.movieapp.presenter.main.moviedetails.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,13 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.domain.model.Movie
-import com.example.movieapp.presenter.main.movie_details.adapter.CastAdapter
-import com.example.movieapp.presenter.main.movie_details.adapter.ViewPagerAdapter
+import com.example.movieapp.presenter.main.moviedetails.similar.SimilarFragment
+import com.example.movieapp.presenter.main.moviedetails.Trailers.TrailersFragment
+import com.example.movieapp.presenter.main.moviedetails.adapter.CastAdapter
+import com.example.movieapp.presenter.main.moviedetails.adapter.ViewPagerAdapter
+import com.example.movieapp.presenter.main.moviedetails.comments.CommentsFragment
 import com.example.movieapp.util.StateView
+import com.example.movieapp.util.ViewPager2ViewHeightAnimator
 import com.example.movieapp.util.formatDate
 import com.example.movieapp.util.initToolbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -59,7 +64,10 @@ class MovieDetailsFragment : Fragment() {
         viewModel.setMovieId(safeArgs.movieId)
 
         val viewPagerAdapter = ViewPagerAdapter(requireActivity())
-        binding.viewPager.adapter = viewPagerAdapter
+        val mViewPage = ViewPager2ViewHeightAnimator()
+
+        mViewPage.viewPager2 = binding.viewPager
+        mViewPage.viewPager2?.adapter = viewPagerAdapter
 
         viewPagerAdapter.addFragment(TrailersFragment(), R.string.title_trailers_tab_layout)
         viewPagerAdapter.addFragment(SimilarFragment(), R.string.title_similar_tab_layout)
@@ -67,9 +75,11 @@ class MovieDetailsFragment : Fragment() {
 
         binding.viewPager.offscreenPageLimit = viewPagerAdapter.itemCount
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+        mViewPage.viewPager2?.let { viewPager ->
+            TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
                 tab.text = getString(viewPagerAdapter.getTitle(position))
             }.attach()
+        }
     }
 
     private fun getMovieDetails() {

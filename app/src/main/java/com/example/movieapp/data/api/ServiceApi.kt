@@ -4,6 +4,7 @@ import com.example.movieapp.data.model.BasePaginationRemote
 import com.example.movieapp.data.model.CreditResponse
 import com.example.movieapp.data.model.GenresResponse
 import com.example.movieapp.data.model.MovieResponse
+import com.example.movieapp.data.model.MovieReviewResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -46,6 +47,9 @@ interface ServiceApi {
     ):  BasePaginationRemote<MovieResponse>
 
 
-
-
+    @GET("movie/{movie_id}/reviews")
+    suspend fun getReviews(
+        @Path("movie_id") movieId: Int?,
+        @Query("language") language: String = "pt-br",
+    ): BasePaginationRemote<MovieReviewResponse>
 }

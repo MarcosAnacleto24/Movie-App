@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.movie_details.adapter
+package com.example.movieapp.presenter.main.moviedetails.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -58,7 +58,7 @@ class CastAdapter(): ListAdapter<Person, CastAdapter.MyViewHolder>(DIFF_CALLBACK
             Glide.with(binding.root.context)
                  .load("https://image.tmdb.org/t/p/w500${person.profilePath}") // URL da imagem
                  .placeholder(R.drawable.placeholder_image) // Imagem enquanto carrega
-                 .error(R.drawable.error_image) // Imagem se a URL falhar
+                 .error(R.drawable.image_profile_error) // Imagem se a URL falhar
                  .into(binding.personImage) // ImageView onde a imagem será exibida
 
 

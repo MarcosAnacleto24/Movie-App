@@ -1,4 +1,4 @@
-package com.example.movieapp.presenter.main.movie_details
+package com.example.movieapp.presenter.main.moviedetails.similar
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentSimilarBinding
-import com.example.movieapp.presenter.main.movie_details.adapter.MovieSimilarAdapter
+import com.example.movieapp.presenter.main.moviedetails.adapter.MovieSimilarAdapter
+import com.example.movieapp.presenter.main.moviedetails.details.MovieDetailsViewModel
 import com.example.movieapp.util.StateView
 import dagger.hilt.android.AndroidEntryPoint
 
