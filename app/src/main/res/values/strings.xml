@@ -76,10 +76,12 @@
     <!--    MovieGenreFragment-->
     <string name="text_search_hint_movie_genre_fragment">Pesquisar</string>
 
-    MovieDetailFragment
+    <!--    MovieDetailFragment-->
     <string name="text_genres_movie_detail_fragment">Gênero: %1$s</string>
     <string name="text_button_play_movie_detail_fragment">Play</string>
     <string name="text_button_download_movie_detail_fragment">Download</string>
+
+
 
 
     <!-- TODO: Remove or change this placeholder text -->
