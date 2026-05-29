@@ -1,5 +1,6 @@
 package com.example.movieapp.data.mapper
 
+import com.example.movieapp.data.local.entity.MovieEntity
 import com.example.movieapp.data.model.AuthorDetailsResponse
 import com.example.movieapp.data.model.BasePaginationRemote
 import com.example.movieapp.data.model.CountryResponse
@@ -128,5 +129,24 @@ fun BasePaginationRemote<MovieReviewResponse>.toReviewDomain(): Pagination<Movie
         totalPages = this.totalPages,
         totalResults = this.totalResults,
         results = this.results?.map { it.toDomain() }
+    )
+}
+
+fun Movie.toEntity(): MovieEntity {
+    return MovieEntity(
+        id = this.id,
+        title = this.title,
+        poster = this.posterPath ?: "", // Use uma string vazia como valor padrão se posterPath for nulo
+        runtime = this.runtime ?: 0, // Use 0 como valor padrão se runtime for nulo
+        insertion = System.currentTimeMillis() // Armazena a data de inserção
+    )
+}
+
+fun MovieEntity.toDomain(): Movie {
+    return Movie(
+        id = this.id,
+        title = this.title,
+        posterPath = this.poster,
+        runtime = this.runtime
     )
 }

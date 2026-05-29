@@ -88,6 +88,10 @@ dependencies {
     //Facebook Shimmer
     implementation(libs.shimmer)
 
+    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
     //Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

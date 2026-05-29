@@ -81,7 +81,9 @@
     <string name="text_button_play_movie_detail_fragment">Play</string>
     <string name="text_button_download_movie_detail_fragment">Download</string>
 
-
+    <!--    SearchFragment-->
+    <string name="text_title_empty_search_fragment">Não encontrado</string>
+    <string name="text_message_empty_search_fragment">Desculpe, a palavra-chave que você digitou não foi encontrada. Tente verificar novamente ou pesquise com outras palavras-chave.</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

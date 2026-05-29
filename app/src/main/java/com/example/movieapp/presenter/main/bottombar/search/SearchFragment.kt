@@ -117,8 +117,16 @@ class SearchFragment : Fragment() {
 
         viewModel.movieList.observe(viewLifecycleOwner) { movieList ->
             movieGenreAdapter.submitList(movieList)
+
+            emptyState(movieList.isEmpty())
         }
 
+
+    }
+
+    private fun emptyState(empty: Boolean) {
+        binding.layoutEmpty.visibility = if (empty) View.VISIBLE else View.GONE
+        binding.rvMovieGenre.visibility = if (empty) View.GONE else View.VISIBLE
 
     }
 
