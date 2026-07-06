@@ -57,7 +57,9 @@ fun MovieResponse.toDomain(): Movie {
         video = this.video,
         adult = this.adult,
         posterPath = this.posterPath,
-        productionCompanies = this.productionCountries?.map { it.toDomain() }
+        productionCompanies = this.productionCountries?.map { it.toDomain() },
+        runtime = this.runtime
+
     )
 }
 

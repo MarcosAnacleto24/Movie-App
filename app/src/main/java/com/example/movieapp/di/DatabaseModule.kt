@@ -21,7 +21,7 @@ class DatabaseModule {
     @Singleton
     fun providesDatabase(
         @ApplicationContext context: Context
-    ): RoomDatabase = Room.databaseBuilder(
+    ): AppDatabase = Room.databaseBuilder(
         context.applicationContext,
         AppDatabase::class.java,
         Database.MOVIE_DATABASE
