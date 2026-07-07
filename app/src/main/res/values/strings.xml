@@ -95,6 +95,11 @@
     <string name="text_title_empty_search_fragment">Não encontrado</string>
     <string name="text_message_empty_search_fragment">Desculpe, a palavra-chave que você digitou não foi encontrada. Tente verificar novamente ou pesquise com outras palavras-chave.</string>
 
+    <!--    bottomSheetDeleteMovie-->
+    <string name="bottom_sheet_delete_movie_title">Excluir</string>
+    <string name="bottom_sheet_delete_movie_message">Tem certeza que deseja excluir o download deste filme?</string>
+    <string name="bottom_sheet_delete_movie_button_delete">Sim, Excluir</string>
+    <string name="bottom_sheet_delete_movie_button_cancel">Cancelar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
