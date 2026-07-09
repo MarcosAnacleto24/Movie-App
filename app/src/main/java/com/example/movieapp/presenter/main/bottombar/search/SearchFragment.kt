@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentSearchBinding
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
@@ -42,6 +43,8 @@ class SearchFragment : Fragment() {
 
         initSearchView()
 
+        handleEmptyStates(isSearchActive = false, isListEmpty = true)
+
     }
 
     private fun configRecyclerView() {
@@ -55,7 +58,7 @@ class SearchFragment : Fragment() {
 
         }
 
-        with(binding.rvMovieGenre) {
+        with(binding.rvMovie) {
             setHasFixedSize(true)
             adapter = movieGenreAdapter
         }
@@ -70,21 +73,27 @@ class SearchFragment : Fragment() {
                 is LoadState.Loading -> {
                     binding.shimmerViewContainer.visibility = View.VISIBLE
                     binding.shimmerViewContainer.startShimmer()
-                    binding.rvMovieGenre.visibility = View.GONE
+                    binding.rvMovie.visibility = View.GONE
+                    binding.layoutEmpty.visibility = View.GONE
+                    binding.layoutSearchEmpty.visibility = View.GONE
                 }
 
                 is LoadState.NotLoading -> {
+
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
-                    binding.rvMovieGenre.visibility = View.VISIBLE
 
-                    val isListEmpty = movieGenreAdapter.itemCount == 0
-                    emptyState(isListEmpty)
+                    handleEmptyStates(
+                        isSearchActive = binding.searchView.query.isNotEmpty(),
+                        isListEmpty = movieGenreAdapter.itemCount == 0
+                    )
+
                 }
 
                 is LoadState.Error -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
+                    handleEmptyStates(isSearchActive = false, isListEmpty = true)
                 }
             }
         }
@@ -102,11 +111,28 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isEmpty()) {
+                    movieGenreAdapter.submitData(
+                        viewLifecycleOwner.lifecycle,
+                        PagingData.empty()
+                    )
+                    handleEmptyStates(
+                        isSearchActive = false,
+                        isListEmpty = movieGenreAdapter.itemCount == 0
+                    )
+                }
                 return false
             }
 
 
         })
+
+        binding.searchView.setOnCloseListener {
+            // Se fechou a barra e não tem nada na lista do adapter, volta para o estado inicial
+            movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
+            handleEmptyStates(isSearchActive = false, isListEmpty = true)
+            false
+        }
 
     }
 
@@ -118,11 +144,31 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun emptyState(empty: Boolean) {
-        binding.layoutEmpty.visibility = if (empty) View.VISIBLE else View.GONE
-        binding.rvMovieGenre.visibility = if (empty) View.GONE else View.VISIBLE
+    private fun handleEmptyStates(isSearchActive: Boolean, isListEmpty: Boolean) {
+        when {
+            // Não tem pesquisa ativa (Estado Inicial) -> Mostra a ilustração de "Pesquise um Filme"
+            !isSearchActive -> {
+                binding.rvMovie.visibility = View.GONE
+                binding.layoutEmpty.visibility = View.VISIBLE
+                binding.layoutSearchEmpty.visibility = View.GONE
+            }
 
+            // Pesquisa ativa mas a lista veio vazia -> Mostra a ilustração de "Nenhum filme encontrado"
+            isSearchActive && isListEmpty -> {
+                binding.rvMovie.visibility = View.GONE
+                binding.layoutEmpty.visibility = View.GONE
+                binding.layoutSearchEmpty.visibility = View.VISIBLE
+            }
+
+            // Tem filmes! Esconde os avisos e exibe a lista na tela
+            else -> {
+                binding.rvMovie.visibility = View.VISIBLE
+                binding.layoutEmpty.visibility = View.GONE
+                binding.layoutSearchEmpty.visibility = View.GONE
+            }
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
