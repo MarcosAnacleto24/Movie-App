@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentSearchBinding
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
-import com.example.movieapp.util.StateView
 import com.example.movieapp.util.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -40,13 +42,6 @@ class SearchFragment : Fragment() {
 
         initSearchView()
 
-        initObservers()
-    }
-
-    private fun initObservers() {
-        stateObserver()
-
-        searchObserver()
     }
 
     private fun configRecyclerView() {
@@ -64,6 +59,35 @@ class SearchFragment : Fragment() {
             setHasFixedSize(true)
             adapter = movieGenreAdapter
         }
+
+        initAdapterLoadStateListener()
+    }
+
+    private fun initAdapterLoadStateListener() {
+        movieGenreAdapter.addLoadStateListener { loadState ->
+            val refreshState = loadState.source.refresh
+            when (refreshState) {
+                is LoadState.Loading -> {
+                    binding.shimmerViewContainer.visibility = View.VISIBLE
+                    binding.shimmerViewContainer.startShimmer()
+                    binding.rvMovieGenre.visibility = View.GONE
+                }
+
+                is LoadState.NotLoading -> {
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
+                    binding.rvMovieGenre.visibility = View.VISIBLE
+
+                    val isListEmpty = movieGenreAdapter.itemCount == 0
+                    emptyState(isListEmpty)
+                }
+
+                is LoadState.Error -> {
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun initSearchView() {
@@ -72,7 +96,7 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 hideKeyboard()
                 if (query.isNotEmpty()) {
-                    viewModel.searchMovies(query)
+                    performSearch(query)
                 }
                 return true
             }
@@ -82,46 +106,16 @@ class SearchFragment : Fragment() {
             }
 
 
-
         })
 
-
     }
 
-    private fun stateObserver() {
-        viewModel.searchState.observe(viewLifecycleOwner) { stateView ->
-            when (stateView) {
-                is StateView.Loading -> {
-                    binding.shimmerViewContainer.visibility = View.VISIBLE
-                    binding.shimmerViewContainer.startShimmer()
-                    binding.rvMovieGenre.visibility = View.GONE
-                }
-
-                is StateView.Success -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                    binding.rvMovieGenre.visibility = View.VISIBLE
-
-
-                }
-
-                is StateView.Error -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                }
+    private fun performSearch(query: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.searchMovies(query).collect { pagingData ->
+                movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
         }
-    }
-
-    private fun searchObserver() {
-
-        viewModel.movieList.observe(viewLifecycleOwner) { movieList ->
-            movieGenreAdapter.submitList(movieList)
-
-            emptyState(movieList.isEmpty())
-        }
-
-
     }
 
     private fun emptyState(empty: Boolean) {

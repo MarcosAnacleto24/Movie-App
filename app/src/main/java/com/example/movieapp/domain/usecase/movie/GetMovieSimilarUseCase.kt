@@ -3,7 +3,8 @@ package com.example.movieapp.domain.usecase.movie
 import com.example.movieapp.domain.model.Movie
 import com.example.movieapp.domain.model.Pagination
 import com.example.movieapp.domain.repository.movie.MovieDetailsRepository
-import jakarta.inject.Inject
+import javax.inject.Inject
+
 
 class GetMovieSimilarUseCase @Inject constructor(
     private val movieDetailsRepository: MovieDetailsRepository

@@ -2,12 +2,17 @@ package com.example.movieapp.presenter.main.moviegenre
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.movieapp.domain.model.Movie
 import com.example.movieapp.domain.usecase.movie.GetMoviesByGenreUseCase
 import com.example.movieapp.domain.usecase.movie.SearchMoviesUseCase
 import com.example.movieapp.util.StateView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 
 @HiltViewModel
 class MovieGenreViewModel @Inject constructor(
@@ -15,35 +20,13 @@ class MovieGenreViewModel @Inject constructor(
     private val searchMoviesUseCase: SearchMoviesUseCase
 ): ViewModel() {
 
-    fun getMoviesByGenre(genreId: Int) = liveData(Dispatchers.IO)  {
-        try {
-            emit(StateView.Loading())
-
-            val result = getMoviesByGenreUseCase(genreId)
-
-            // Enviamos apenas a lista de filmes
-            emit(StateView.Success(result.results))
-
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(StateView.Error(e.message))
-        }
+    // Retorna o Flow de PagingData diretamente, mantendo-o em cache no escopo do ViewModel
+    fun getMoviesByGenre(genreId: Int): Flow<PagingData<Movie>> {
+        return getMoviesByGenreUseCase(genreId)
+            .cachedIn(viewModelScope)
     }
 
-    fun searchMovies(query: String) = liveData(Dispatchers.IO)  {
-        try {
-            emit(StateView.Loading())
-
-            val result = searchMoviesUseCase(query)
-
-            // Enviamos apenas a lista de filmes
-            emit(StateView.Success(result.results))
-
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(StateView.Error(e.message))
-        }
+    fun searchMovies(query: String): Flow<PagingData<Movie>> {
+        return searchMoviesUseCase(query).cachedIn(viewModelScope)
     }
 }

@@ -1,7 +1,7 @@
 package com.example.movieapp.domain.usecase.auth
 
 import com.example.movieapp.domain.repository.auth.FirebaseAuthentication
-import jakarta.inject.Inject
+import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
     private val firebaseAuthentication: FirebaseAuthentication

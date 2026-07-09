@@ -8,7 +8,8 @@ import com.example.movieapp.domain.model.Movie
 import com.example.movieapp.domain.model.MovieReview
 import com.example.movieapp.domain.model.Pagination
 import com.example.movieapp.domain.repository.movie.MovieDetailsRepository
-import jakarta.inject.Inject
+import javax.inject.Inject
+
 
 class MovieDetailsRepositoryImpl @Inject constructor(
     private val serviceApi: ServiceApi

@@ -3,7 +3,7 @@ package com.example.movieapp.presenter.main.bottombar.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.movieapp.domain.usecase.movie.GetGenresUseCase
-import com.example.movieapp.domain.usecase.movie.GetMoviesByGenreUseCase
+import com.example.movieapp.domain.usecase.movie.GetMoviesByGenreListUseCase
 import com.example.movieapp.util.StateView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getGenresUseCase: GetGenresUseCase,
-    private val getMoviesByGenreUseCase: GetMoviesByGenreUseCase
+    private val getMoviesByGenreListUseCase: GetMoviesByGenreListUseCase
 ): ViewModel() {
 
     fun getGenres() = liveData(Dispatchers.IO) {
@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
             genres.forEach { genre ->
                 genre.id?.let { id ->
                     // Busca a paginação e extrai a lista de filmes (List<Movie>)
-                    val pagination = getMoviesByGenreUseCase(id)
+                    val pagination = getMoviesByGenreListUseCase(id)
                     genre.movies = pagination.results?.take(5)
                 }
             }

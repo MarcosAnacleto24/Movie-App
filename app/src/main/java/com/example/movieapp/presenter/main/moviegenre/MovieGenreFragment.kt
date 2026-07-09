@@ -12,17 +12,19 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieGenreBinding
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
-import com.example.movieapp.util.StateView
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
 import com.ferfalk.simplesearchview.SimpleSearchView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -79,29 +81,13 @@ class MovieGenreFragment : Fragment() {
     }
 
     private fun getMoviesByGenre() {
-        viewModel.getMoviesByGenre(safeArgs.genreId).observe(viewLifecycleOwner) { stateView ->
-            when (stateView) {
-                is StateView.Loading -> {
-                    binding.rvMovieGenre.visibility = View.GONE
-                    binding.shimmerViewContainer.visibility = View.VISIBLE
-                    binding.shimmerViewContainer.startShimmer()
-                }
-
-                is StateView.Success -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                    stateView.data?.let { movies ->
-                        movieGenreAdapter.submitList(movies)
-                    }
-                    binding.rvMovieGenre.visibility = View.VISIBLE
-                }
-
-                is StateView.Error -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getMoviesByGenre(safeArgs.genreId).collect { pagingData ->
+                // O metodo do PagingDataAdapter agora recebe a receita inteira e o ciclo de vida
+                movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
         }
+
     }
 
     private fun configRecyclerView() {
@@ -119,6 +105,32 @@ class MovieGenreFragment : Fragment() {
             setHasFixedSize(true)
             adapter = movieGenreAdapter
         }
+
+        initAdapterLoadStateListener()
+
+    }
+
+    private fun initAdapterLoadStateListener() {
+        movieGenreAdapter.addLoadStateListener { loadStates ->
+            val refreshState = loadStates.refresh
+            when (refreshState) {
+                is LoadState.Loading -> {
+                    binding.rvMovieGenre.visibility = View.GONE
+                    binding.shimmerViewContainer.visibility = View.VISIBLE
+                    binding.shimmerViewContainer.startShimmer()
+                }
+                is LoadState.NotLoading -> {
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
+                    binding.rvMovieGenre.visibility = View.VISIBLE
+                }
+                is LoadState.Error -> {
+                    binding.shimmerViewContainer.stopShimmer()
+                    binding.shimmerViewContainer.visibility = View.GONE
+
+                }
+            }
+        }
     }
 
     private fun initSearchView() {
@@ -127,7 +139,7 @@ class MovieGenreFragment : Fragment() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 hideKeyboard()
                 if (query.isNotEmpty()) {
-                    getMovies(query)
+                    searchMovies(query)
                 }
                 return true
             }
@@ -164,32 +176,13 @@ class MovieGenreFragment : Fragment() {
 
     }
 
-    private fun getMovies(query: String) {
-        viewModel.searchMovies(query).observe(viewLifecycleOwner) { stateView ->
-            when (stateView) {
-                is StateView.Loading -> {
-                    binding.shimmerViewContainer.visibility = View.VISIBLE
-                    binding.shimmerViewContainer.startShimmer()
-                    binding.rvMovieGenre.visibility = View.GONE
-                }
-
-                is StateView.Success -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                    binding.rvMovieGenre.visibility = View.VISIBLE
-                    stateView.data?.let { movies ->
-                        movieGenreAdapter.submitList(movies)
-                    }
-
-
-                }
-
-                is StateView.Error -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                }
+    private fun searchMovies(query: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.searchMovies(query).collect { pagingData ->
+                movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
         }
+
     }
 
 

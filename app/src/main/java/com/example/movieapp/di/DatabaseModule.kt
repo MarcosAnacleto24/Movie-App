@@ -2,7 +2,6 @@ package com.example.movieapp.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.movieapp.data.local.dao.MovieDao
 import com.example.movieapp.data.local.db.AppDatabase
 import com.example.movieapp.util.Database

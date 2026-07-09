@@ -3,19 +3,18 @@ package com.example.movieapp.presenter.main.moviegenre.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.MovieGenreItemBinding
-import com.example.movieapp.databinding.MovieItemBinding
 import com.example.movieapp.domain.model.Movie
 
 class MovieGenreAdapter(
     private val context: Context,
     private val onClick: (id: Int?) -> Unit
-): ListAdapter<Movie, MovieGenreAdapter.MyViewHolder>(DIFF_CALLBACK) {
+): PagingDataAdapter<Movie, MovieGenreAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
@@ -28,9 +27,9 @@ class MovieGenreAdapter(
 
             override fun areContentsTheSame(
                 oldItem: Movie,
-                news: Movie
+                newItem: Movie
             ): Boolean {
-                return oldItem == news
+                return oldItem == newItem
             }
 
         }
@@ -50,8 +49,10 @@ class MovieGenreAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val article = getItem(position)
-        holder.bind(article)
+        val movie = getItem(position)
+        movie?.let {
+            holder.bind(it)
+        }
     }
 
     inner class MyViewHolder(val binding: MovieGenreItemBinding ) :

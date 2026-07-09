@@ -1,7 +1,6 @@
 package com.example.movieapp.data.local.repository
 
 import com.example.movieapp.data.local.dao.MovieDao
-import com.example.movieapp.data.local.entity.MovieEntity
 import com.example.movieapp.data.mapper.toDomain
 import com.example.movieapp.data.mapper.toEntity
 import com.example.movieapp.domain.local.repository.MovieLocalRepository

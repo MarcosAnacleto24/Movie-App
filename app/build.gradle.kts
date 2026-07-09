@@ -82,18 +82,22 @@ dependencies {
     // Glide
     implementation(libs.glide)
 
-    //SimpleSearchView
+    // SimpleSearchView
     implementation(libs.simplesearchview)
 
-    //Facebook Shimmer
+    // Facebook Shimmer
     implementation(libs.shimmer)
 
-    //Room
+    // Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
-    //Test
+    // Paging
+    implementation(libs.androidx.paging.runtime)
+
+    // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }
