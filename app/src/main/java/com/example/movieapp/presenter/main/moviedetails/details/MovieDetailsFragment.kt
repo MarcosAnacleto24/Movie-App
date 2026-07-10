@@ -23,6 +23,7 @@ import com.example.movieapp.presenter.main.moviedetails.similar.SimilarFragment
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.ViewPager2ViewHeightAnimator
 import com.example.movieapp.util.calculateFileSize
+import com.example.movieapp.util.circularProgressDrawable
 import com.example.movieapp.util.formatDate
 import com.example.movieapp.util.initToolbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -174,7 +175,7 @@ class MovieDetailsFragment : Fragment() {
 
         Glide.with(requireContext())
             .load("https://image.tmdb.org/t/p/w500${movie.backdropPath}")
-            .placeholder(R.drawable.placeholder_image) // Imagem enquanto carrega
+            .placeholder(requireContext().circularProgressDrawable()) // Imagem enquanto carrega
             .error(R.drawable.error_image) // Imagem se a URL falhar
             .into(binding.imageMovie)
 

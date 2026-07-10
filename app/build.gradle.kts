@@ -95,6 +95,9 @@ dependencies {
     // Paging
     implementation(libs.androidx.paging.runtime)
 
+    // SwipeRefreshLayout
+    implementation(libs.androidx.swiperefreshlayout)
+
     // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.MovieGenreItemBinding
 import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.util.circularProgressDrawable
 
 class MovieGenreAdapter(
     private val context: Context,
@@ -63,7 +64,7 @@ class MovieGenreAdapter(
             // Carregando a imagem com glide
             Glide.with(context)
                  .load("https://image.tmdb.org/t/p/w500${movie.posterPath}") // URL da imagem
-                 .placeholder(R.drawable.placeholder_image) // Imagem enquanto carrega
+                 .placeholder(context.circularProgressDrawable()) // Imagem enquanto carrega
                  .error(R.drawable.error_image) // Imagem se a URL falhar
                  .into(binding.movieImg)
 

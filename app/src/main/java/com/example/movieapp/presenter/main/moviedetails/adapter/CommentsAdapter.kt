@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.ItemCommentReviewBinding
 import com.example.movieapp.domain.model.MovieReview
+import com.example.movieapp.util.circularProgressDrawable
 import com.example.movieapp.util.formatCommentDate
 
 class CommentsAdapter(): ListAdapter<MovieReview, CommentsAdapter.MyViewHolder>(DIFF_CALLBACK) {
@@ -57,7 +58,7 @@ class CommentsAdapter(): ListAdapter<MovieReview, CommentsAdapter.MyViewHolder>(
 
             Glide.with(binding.root.context)
                 .load("https://image.tmdb.org/t/p/w500${movieReview.authorDetails?.avatarPath}") // URL da imagem
-                .placeholder(R.drawable.placeholder_image) // Imagem enquanto carrega
+                .placeholder(binding.root.context.circularProgressDrawable(3f, 15f)) // Imagem enquanto carrega
                 .error(R.drawable.image_profile_error) // Imagem se a URL falhar
                 .into(binding.imageUser) // ImageView onde a imagem será exibida
 

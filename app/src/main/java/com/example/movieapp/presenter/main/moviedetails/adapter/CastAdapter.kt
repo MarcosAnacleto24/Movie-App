@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.CastItemBinding
 import com.example.movieapp.domain.model.Person
+import com.example.movieapp.util.circularProgressDrawable
 
 class CastAdapter(): ListAdapter<Person, CastAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
@@ -57,7 +58,7 @@ class CastAdapter(): ListAdapter<Person, CastAdapter.MyViewHolder>(DIFF_CALLBACK
             // Carregando a imagem com glide
             Glide.with(binding.root.context)
                  .load("https://image.tmdb.org/t/p/w500${person.profilePath}") // URL da imagem
-                 .placeholder(R.drawable.placeholder_image) // Imagem enquanto carrega
+                 .placeholder(binding.root.context.circularProgressDrawable(4f, 20f)) // Imagem enquanto carrega
                  .error(R.drawable.image_profile_error) // Imagem se a URL falhar
                  .into(binding.personImage) // ImageView onde a imagem será exibida
 

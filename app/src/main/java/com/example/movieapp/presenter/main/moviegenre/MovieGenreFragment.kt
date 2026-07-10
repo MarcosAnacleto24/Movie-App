@@ -16,12 +16,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieGenreBinding
+import com.example.movieapp.presenter.main.moviegenre.adapter.LoadStatePagingAdapter
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
+import com.example.movieapp.util.showSnackBarString
 import com.ferfalk.simplesearchview.SimpleSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -101,9 +104,28 @@ class MovieGenreFragment : Fragment() {
 
         }
 
+        // Cria o seu Grid indicando a quantidade de colunas (exemplo: 2 ou 3 colunas)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 2)
+
+        //  Diz para o Grid ocupar todas as colunas se o item for o rodapé de loading
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                // Se o tipo do item for o do rodapé de carregamento, ele ocupa o total de colunas (2)
+                // Caso contrário, ocupa apenas 1 espaço (comportamento padrão do item de filme)
+                return if (position == movieGenreAdapter.itemCount && movieGenreAdapter.itemCount > 0) {
+                    gridLayoutManager.spanCount // Ocupa a largura total (todas as colunas)
+                } else {
+                    1 // Item comum ocupa apenas uma coluna
+                }
+            }
+        }
+
         with(binding.rvMovieGenre) {
             setHasFixedSize(true)
-            adapter = movieGenreAdapter
+            layoutManager = gridLayoutManager
+            adapter = movieGenreAdapter.withLoadStateFooter(
+                footer = LoadStatePagingAdapter()
+            )
         }
 
         initAdapterLoadStateListener()
@@ -112,21 +134,31 @@ class MovieGenreFragment : Fragment() {
 
     private fun initAdapterLoadStateListener() {
         movieGenreAdapter.addLoadStateListener { loadStates ->
-            val refreshState = loadStates.refresh
-            when (refreshState) {
+            when (val refreshState = loadStates.refresh) {
                 is LoadState.Loading -> {
                     binding.rvMovieGenre.visibility = View.GONE
                     binding.shimmerViewContainer.visibility = View.VISIBLE
                     binding.shimmerViewContainer.startShimmer()
                 }
+
                 is LoadState.NotLoading -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
                     binding.rvMovieGenre.visibility = View.VISIBLE
                 }
+
                 is LoadState.Error -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
+                    val error = refreshState.error
+                    val message = error.localizedMessage
+                    showSnackBarString(
+                        message = getString(
+                            R.string.error_loading_movies,
+                            message ?: getString(R.string.unknown_error)
+                        )
+                    )
+
 
                 }
             }
@@ -134,7 +166,8 @@ class MovieGenreFragment : Fragment() {
     }
 
     private fun initSearchView() {
-        binding.simpleSearchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
+        binding.simpleSearchView.setOnQueryTextListener(object :
+            SimpleSearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 hideKeyboard()
@@ -145,7 +178,7 @@ class MovieGenreFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-               return false
+                return false
             }
 
             override fun onQueryTextCleared(): Boolean {
@@ -155,7 +188,8 @@ class MovieGenreFragment : Fragment() {
 
         })
 
-        binding.simpleSearchView.setOnSearchViewListener(object : SimpleSearchView.SearchViewListener {
+        binding.simpleSearchView.setOnSearchViewListener(object :
+            SimpleSearchView.SearchViewListener {
             override fun onSearchViewClosed() {
                 getMoviesByGenre()
             }

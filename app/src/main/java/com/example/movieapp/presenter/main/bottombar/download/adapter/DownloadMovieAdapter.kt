@@ -13,6 +13,7 @@ import com.example.movieapp.databinding.MovieItemBinding
 import com.example.movieapp.domain.model.Movie
 import com.example.movieapp.util.calculateFileSize
 import com.example.movieapp.util.calculateMovieTime
+import com.example.movieapp.util.circularProgressDrawable
 
 class DownloadMovieAdapter(
     private val context: Context,
@@ -65,7 +66,7 @@ class DownloadMovieAdapter(
             // Carregando a imagem com glide
             Glide.with(context)
                  .load("https://image.tmdb.org/t/p/w200${movie.posterPath}") // URL da imagem
-                 .placeholder(R.drawable.placeholder_image) // Imagem enquanto carrega
+                 .placeholder(context.circularProgressDrawable()) // Imagem enquanto carrega
                  .error(R.drawable.error_image) // Imagem se a URL falhar
                  .into(binding.ivMovie)
 

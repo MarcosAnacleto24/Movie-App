@@ -1,10 +1,14 @@
 package com.example.movieapp.util
 
+import android.R.attr.strokeWidth
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.example.movieapp.R
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
@@ -43,6 +47,26 @@ fun Fragment.showSnackBar(message: Int, duration: Int = Snackbar.LENGTH_SHORT) {
     view?.let { Snackbar.make(it, message, duration).show() }
 }
 
+fun Fragment.showSnackBarString(message: String, duration: Int = Snackbar.LENGTH_SHORT) {
+    view?.let { Snackbar.make(it, message, duration).show() }
+}
+
+fun Context.circularProgressDrawable(
+    strokeWidth: Float = 12f,   // Valor padrão para imagens grandes
+    centerRadius: Float = 60f   // Valor padrão para imagens grandes
+): Drawable {
+    return CircularProgressDrawable(this).apply {
+        this.strokeWidth = strokeWidth
+        this.centerRadius = centerRadius
+        setColorSchemeColors(
+            ContextCompat.getColor(
+                this@circularProgressDrawable,
+                R.color.color_default
+            )
+        )
+        start()
+    }
+}
 fun String.formatDate(): String? {
     return try {
         // Formato que vem da API NewsAPI

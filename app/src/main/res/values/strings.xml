@@ -14,6 +14,8 @@
     <string name="text_password_empty">Digite sua senha</string>
     <string name="error_generic">Ocorreu um erro, por favor tente novamente mais tarde.</string>
     <string name="text_formated_value">R$ %1$s</string>
+    <string name="error_loading_movies">Erro ao carregar filmes: %1$s</string>
+    <string name="unknown_error">Erro desconhecido, por favor tente novamente mais tarde.</string>
 
     <!--    Erros Firebase Authentication-->
     <string name="account_not_register_or_password_invalid">E-mail ou senha inválidos. Por favor, verifique e tente novamente.</string>
