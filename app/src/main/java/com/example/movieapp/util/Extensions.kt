@@ -1,6 +1,5 @@
 package com.example.movieapp.util
 
-import android.R.attr.strokeWidth
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.inputmethod.InputMethodManager
