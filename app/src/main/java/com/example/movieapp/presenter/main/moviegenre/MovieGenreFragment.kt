@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieGenreBinding
-import com.example.movieapp.presenter.main.moviegenre.adapter.LoadStatePagingAdapter
+import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreLoadStatePagingAdapter
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
@@ -136,7 +136,7 @@ class MovieGenreFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = gridLayoutManager
             adapter = movieGenreAdapter.withLoadStateFooter(
-                footer = LoadStatePagingAdapter()
+                footer = MovieGenreLoadStatePagingAdapter()
             )
         }
 

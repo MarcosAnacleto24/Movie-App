@@ -8,7 +8,7 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.databinding.LoadStatePagingAdapterBinding
 
-class LoadStatePagingAdapter : LoadStateAdapter<LoadStatePagingAdapter.LoadStateViewHolder>() {
+class MovieGenreLoadStatePagingAdapter : LoadStateAdapter<MovieGenreLoadStatePagingAdapter.LoadStateViewHolder>() {
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
         holder.binding.apply {
