@@ -27,7 +27,7 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getMoviesByGenre(genreId: Int): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 10,          // Quantidade de itens por página da API do TMDB
+                pageSize = 20,          // Quantidade de itens por página da API do TMDB
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {

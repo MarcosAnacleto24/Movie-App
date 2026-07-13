@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -41,6 +43,8 @@ class SearchFragment : Fragment() {
 
         configRecyclerView()
 
+        initSearchCollector()
+
         initSearchView()
 
         handleEmptyStates(isSearchActive = false, isListEmpty = true)
@@ -71,11 +75,13 @@ class SearchFragment : Fragment() {
             val refreshState = loadState.source.refresh
             when (refreshState) {
                 is LoadState.Loading -> {
-                    binding.shimmerViewContainer.visibility = View.VISIBLE
-                    binding.shimmerViewContainer.startShimmer()
-                    binding.rvMovie.visibility = View.GONE
-                    binding.layoutEmpty.visibility = View.GONE
-                    binding.layoutSearchEmpty.visibility = View.GONE
+                   if (movieGenreAdapter.itemCount == 0) {
+                       binding.shimmerViewContainer.visibility = View.VISIBLE
+                       binding.shimmerViewContainer.startShimmer()
+                       binding.rvMovie.visibility = View.GONE
+                       binding.layoutEmpty.visibility = View.GONE
+                       binding.layoutSearchEmpty.visibility = View.GONE
+                   }
                 }
 
                 is LoadState.NotLoading -> {
@@ -93,7 +99,21 @@ class SearchFragment : Fragment() {
                 is LoadState.Error -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
-                    handleEmptyStates(isSearchActive = false, isListEmpty = true)
+
+                    if (movieGenreAdapter.itemCount == 0) {
+                        handleEmptyStates(isSearchActive = false, isListEmpty = true)
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun initSearchCollector() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchMoviesFlow.collect { pagingData ->
+                    movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
                 }
             }
         }
@@ -105,21 +125,19 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 hideKeyboard()
                 if (query.isNotEmpty()) {
-                    performSearch(query)
+                    viewModel.searchMovies(query) // Atualiza o fluxo da ViewModel
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isEmpty()) {
-                    movieGenreAdapter.submitData(
-                        viewLifecycleOwner.lifecycle,
-                        PagingData.empty()
-                    )
-                    handleEmptyStates(
-                        isSearchActive = false,
-                        isListEmpty = movieGenreAdapter.itemCount == 0
-                    )
+                if (newText.isNotEmpty()) {
+                    viewModel.searchMovies(newText) // Atualiza o fluxo da ViewModel
+                } else {
+                    // Se o campo ficou vazio, limpa a lista e volta para o estado inicial
+                    movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
+                    viewModel.searchMovies("") // Reseta o fluxo na ViewModel também
+                    handleEmptyStates(isSearchActive = false, isListEmpty = true)
                 }
                 return false
             }
@@ -130,18 +148,11 @@ class SearchFragment : Fragment() {
         binding.searchView.setOnCloseListener {
             // Se fechou a barra e não tem nada na lista do adapter, volta para o estado inicial
             movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, PagingData.empty())
+            viewModel.searchMovies("")
             handleEmptyStates(isSearchActive = false, isListEmpty = true)
             false
         }
 
-    }
-
-    private fun performSearch(query: String) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.searchMovies(query).collect { pagingData ->
-                movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-            }
-        }
     }
 
     private fun handleEmptyStates(isSearchActive: Boolean, isListEmpty: Boolean) {

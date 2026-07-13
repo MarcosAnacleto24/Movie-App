@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
@@ -76,21 +77,32 @@ class MovieGenreFragment : Fragment() {
 
         configRecyclerView()
 
-        getMoviesByGenre()
+        initMoviesCollector()
 
         initSearchView()
 
 
     }
 
-    private fun getMoviesByGenre() {
+    private fun initMoviesCollector() {
+        viewModel.setGenreId(safeArgs.genreId)
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getMoviesByGenre(safeArgs.genreId).collect { pagingData ->
-                // O metodo do PagingDataAdapter agora recebe a receita inteira e o ciclo de vida
-                movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Verificamos se a barra de busca está aberta no momento do ciclo de vida
+                if (binding.simpleSearchView.isSearchOpen) {
+                    // Se a busca estiver aberta ao voltar da tela, mantém o foco no fluxo de busca
+                    viewModel.searchMoviesFlow.collect { pagingData ->
+                        movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                    }
+                } else {
+                    // Se a busca estiver fechada, consome os dados normais por gênero
+                    viewModel.moviesByGenreFlow.collect { pagingData ->
+                        movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                    }
+                }
             }
         }
-
     }
 
     private fun configRecyclerView() {
@@ -136,9 +148,12 @@ class MovieGenreFragment : Fragment() {
         movieGenreAdapter.addLoadStateListener { loadStates ->
             when (val refreshState = loadStates.refresh) {
                 is LoadState.Loading -> {
-                    binding.rvMovieGenre.visibility = View.GONE
-                    binding.shimmerViewContainer.visibility = View.VISIBLE
-                    binding.shimmerViewContainer.startShimmer()
+
+                   if (movieGenreAdapter.itemCount == 0) {
+                       binding.rvMovieGenre.visibility = View.GONE
+                       binding.shimmerViewContainer.visibility = View.VISIBLE
+                       binding.shimmerViewContainer.startShimmer()
+                   }
                 }
 
                 is LoadState.NotLoading -> {
@@ -150,6 +165,11 @@ class MovieGenreFragment : Fragment() {
                 is LoadState.Error -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
+
+                    if (movieGenreAdapter.itemCount == 0) {
+                        binding.rvMovieGenre.visibility = View.GONE
+                    }
+
                     val error = refreshState.error
                     val message = error.localizedMessage
                     showSnackBarString(
@@ -191,7 +211,8 @@ class MovieGenreFragment : Fragment() {
         binding.simpleSearchView.setOnSearchViewListener(object :
             SimpleSearchView.SearchViewListener {
             override fun onSearchViewClosed() {
-                getMoviesByGenre()
+                viewModel.searchMovies("") // Limpa o fluxo de busca quando a barra de busca é fechada
+                initMoviesCollector()
             }
 
             override fun onSearchViewClosedAnimation() {
@@ -211,11 +232,9 @@ class MovieGenreFragment : Fragment() {
     }
 
     private fun searchMovies(query: String) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.searchMovies(query).collect { pagingData ->
-                movieGenreAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
-            }
-        }
+
+       viewModel.searchMovies(query)
+       initMoviesCollector()
 
     }
 
