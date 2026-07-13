@@ -37,6 +37,7 @@ object NetworkModule {
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request().url.newBuilder()
                     .addQueryParameter("api_key", BuildConfig.API_KEY)
+                    .addQueryParameter("language", "pt-BR")
                     .build()
                 val newRequest = chain.request().newBuilder().url(request).build()
                 chain.proceed(newRequest)
