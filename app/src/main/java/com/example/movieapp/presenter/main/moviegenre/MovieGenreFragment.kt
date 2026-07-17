@@ -21,12 +21,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieGenreBinding
-import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreLoadStatePagingAdapter
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
+import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreLoadStatePagingAdapter
 import com.example.movieapp.util.animateNavigation
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
-import com.example.movieapp.util.showSnackBarString
 import com.ferfalk.simplesearchview.SimpleSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

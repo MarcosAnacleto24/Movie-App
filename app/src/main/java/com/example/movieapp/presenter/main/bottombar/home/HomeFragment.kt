@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentHomeBinding
 import com.example.movieapp.presenter.main.bottombar.home.adapter.GenreMovieAdapter
-import com.example.movieapp.util.NavAnimationType
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.animateNavigation
 import dagger.hilt.android.AndroidEntryPoint
