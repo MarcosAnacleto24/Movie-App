@@ -7,6 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.example.movieapp.R
 import com.google.android.material.snackbar.Snackbar
@@ -127,4 +131,55 @@ fun Int.calculateMovieTime(): String {
 
     return "${hours}h ${minutes}m"
 }
+
+fun NavController.animateNavigation(
+    action: Int,
+    navAnimationType: NavAnimationType = NavAnimationType.SLIDE_HORIZONTAL
+) {
+    val navOptions = getNavOptions(navAnimationType)
+    this.navigate(action,null, navOptions)
+}
+
+fun NavController.animateNavigation(
+    nav: NavDirections,
+    animationType: NavAnimationType = NavAnimationType.SHARED_AXIS_X
+) {
+    val navOptions = getNavOptions(animationType)
+    this.navigate(nav.actionId, nav.arguments, navOptions)
+}
+
+private fun getNavOptions(animationType: NavAnimationType): NavOptions {
+    val builder = NavOptions.Builder()
+
+    when (animationType) {
+        NavAnimationType.SLIDE_HORIZONTAL -> {
+            builder.setEnterAnim(R.anim.enter)
+                .setExitAnim(R.anim.exit)
+                .setPopEnterAnim(R.anim.pop_enter)
+                .setPopExitAnim(R.anim.pop_exit)
+        }
+        NavAnimationType.SLIDE_VERTICAL -> {
+            builder.setEnterAnim(R.anim.slide_up_enter)
+                .setExitAnim(R.anim.slide_up_exit)
+                .setPopEnterAnim(R.anim.slide_down_pop_enter)
+                .setPopExitAnim(R.anim.slide_down_pop_exit)
+        }
+        NavAnimationType.FADE -> {
+            builder.setEnterAnim(R.anim.fade_in)
+                .setExitAnim(R.anim.fade_out)
+                .setPopEnterAnim(R.anim.fade_in)
+                .setPopExitAnim(R.anim.fade_out)
+        }
+        NavAnimationType.SHARED_AXIS_X -> {
+            builder.setEnterAnim(R.anim.shared_axis_x_enter)
+                .setExitAnim(R.anim.shared_axis_x_exit)
+                .setPopEnterAnim(R.anim.shared_axis_x_enter)
+                .setPopExitAnim(R.anim.shared_axis_x_exit)
+        }
+    }
+
+    return builder.build()
+}
+
+
 

@@ -17,6 +17,7 @@ import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentSearchBinding
 import com.example.movieapp.presenter.main.bottombar.search.adapter.SearchAdapter
 import com.example.movieapp.presenter.main.bottombar.search.adapter.SearchLoadStateAdapter
+import com.example.movieapp.util.animateNavigation
 import com.example.movieapp.util.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -58,7 +59,7 @@ class SearchFragment : Fragment() {
 
             movieId?.let {
                 val action = MainGraphDirections.actionGlobalMovieDetailsFragment(movieId)
-                findNavController().navigate(action)
+                findNavController().animateNavigation(action)
             }
 
         }
