@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
-import androidx.navigation.navOptions
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.example.movieapp.R
 import com.google.android.material.snackbar.Snackbar
@@ -47,10 +46,6 @@ fun Fragment.initToolbar(toolbar: Toolbar, showIconNavigation: Boolean = false) 
 }
 
 fun Fragment.showSnackBar(message: Int, duration: Int = Snackbar.LENGTH_SHORT) {
-    view?.let { Snackbar.make(it, message, duration).show() }
-}
-
-fun Fragment.showSnackBarString(message: String, duration: Int = Snackbar.LENGTH_SHORT) {
     view?.let { Snackbar.make(it, message, duration).show() }
 }
 
