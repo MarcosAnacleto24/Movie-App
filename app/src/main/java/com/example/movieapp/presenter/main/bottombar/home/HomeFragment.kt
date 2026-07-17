@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentHomeBinding
 import com.example.movieapp.presenter.main.bottombar.home.adapter.GenreMovieAdapter
+import com.example.movieapp.util.NavAnimationType
 import com.example.movieapp.util.StateView
+import com.example.movieapp.util.animateNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -74,12 +76,12 @@ class HomeFragment : Fragment() {
         genreMovieAdapter = GenreMovieAdapter(
             showAll = { genreId, genreName ->
                 val action = HomeFragmentDirections.actionMenuHomeToMovieGenreFragment(genreId, genreName)
-                findNavController().navigate(action)
+                findNavController().animateNavigation(action)
             },
             onClick = { movieId ->
                 movieId?.let {
                     val action = MainGraphDirections.actionGlobalMovieDetailsFragment(movieId)
-                    findNavController().navigate(action)
+                    findNavController().animateNavigation(action)
                 }
 
 

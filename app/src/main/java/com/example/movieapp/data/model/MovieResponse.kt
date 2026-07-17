@@ -28,6 +28,9 @@ data class MovieResponse(
     @SerializedName("popularity")
     val popularity: Float?,
 
+    @SerializedName("genre_ids")
+    val genreIds: List<Int>?,
+
     @SerializedName("poster_path")
     val posterPath: String?,
 

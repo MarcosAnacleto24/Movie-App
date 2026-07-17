@@ -50,6 +50,7 @@ fun MovieResponse.toDomain(): Movie {
         voteAverage = this.voteAverage,
         voteCount = this.voteCount,
         popularity = this.popularity,
+        genreIds = this.genreIds,
         genres = this.genres?.map { it.toDomain() },
         backdropPath = "https://image.tmdb.org/t/p/w500${this.backdropPath}",
         originalLanguage = this.originalLanguage,

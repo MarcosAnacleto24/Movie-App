@@ -13,6 +13,7 @@ import com.example.movieapp.databinding.FragmentSimilarBinding
 import com.example.movieapp.presenter.main.moviedetails.adapter.MovieSimilarAdapter
 import com.example.movieapp.presenter.main.moviedetails.details.MovieDetailsViewModel
 import com.example.movieapp.util.StateView
+import com.example.movieapp.util.animateNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +56,7 @@ class SimilarFragment : Fragment() {
 
             movieId?.let {
                 val action = MainGraphDirections.actionGlobalMovieDetailsFragment(movieId)
-                findNavController().navigate(action)
+                findNavController().animateNavigation(action)
             }
         }
 

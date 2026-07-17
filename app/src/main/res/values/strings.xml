@@ -88,6 +88,8 @@
 
     <!--    MovieGenreFragment-->
     <string name="text_search_hint_movie_genre_fragment">Pesquisar</string>
+    <string name="text_title_not_found_movie_genre_fragment">Nenhum filme encontrado</string>
+    <string name="text_message_note_found_movie_genre_fragment">Não encontramos nenhum filme cadastrado para este gênero no momento\n.</string>
 
     <!--    MovieDetailFragment-->
     <string name="text_genres_movie_detail_fragment">Gênero: %1$s</string>

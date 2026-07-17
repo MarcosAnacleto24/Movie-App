@@ -13,6 +13,7 @@ data class Movie(
     val originalTitle: String? = null,
     val overview: String? = null,
     val popularity: Float? = null,
+    val genreIds: List<Int>? = null,
     val posterPath: String? = null,
     val releaseDate: String? = null,
     val title: String? = null,

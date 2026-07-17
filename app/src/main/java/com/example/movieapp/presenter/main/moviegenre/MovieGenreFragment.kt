@@ -23,6 +23,7 @@ import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieGenreBinding
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreLoadStatePagingAdapter
 import com.example.movieapp.presenter.main.moviegenre.adapter.MovieGenreAdapter
+import com.example.movieapp.util.animateNavigation
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
 import com.example.movieapp.util.showSnackBarString
@@ -111,7 +112,7 @@ class MovieGenreFragment : Fragment() {
 
             movieId?.let {
                 val action = MainGraphDirections.actionGlobalMovieDetailsFragment(movieId)
-                findNavController().navigate(action)
+                findNavController().animateNavigation(action)
             }
 
         }
@@ -159,25 +160,21 @@ class MovieGenreFragment : Fragment() {
                 is LoadState.NotLoading -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
-                    binding.rvMovieGenre.visibility = View.VISIBLE
+
+                    val isListEmpty = movieGenreAdapter.itemCount == 0
+                    val isSearchActive = binding.simpleSearchView.isSearchOpen
+                    handleEmptyStates(isSearchActive = isSearchActive, isListEmpty = isListEmpty)
                 }
 
                 is LoadState.Error -> {
                     binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
 
-                    if (movieGenreAdapter.itemCount == 0) {
-                        binding.rvMovieGenre.visibility = View.GONE
-                    }
+                    val isListEmpty = movieGenreAdapter.itemCount == 0
 
-                    val error = refreshState.error
-                    val message = error.localizedMessage
-                    showSnackBarString(
-                        message = getString(
-                            R.string.error_loading_movies,
-                            message ?: getString(R.string.unknown_error)
-                        )
-                    )
+                    val isSearchActive = binding.simpleSearchView.isSearchOpen
+
+                    handleEmptyStates(isSearchActive = isSearchActive, isListEmpty = isListEmpty)
 
 
                 }
@@ -237,6 +234,32 @@ class MovieGenreFragment : Fragment() {
        initMoviesCollector()
 
     }
+
+    private fun handleEmptyStates(isSearchActive: Boolean, isListEmpty: Boolean) {
+        when {
+            // Pesquisa ativa e nenhum filme encontrado
+            isSearchActive && isListEmpty -> {
+                binding.rvMovieGenre.visibility = View.GONE
+                binding.layoutEmpty.visibility = View.VISIBLE
+
+            }
+            // Fora da pesquisa e nenhum filme encontrado
+            !isSearchActive && isListEmpty -> {
+                binding.rvMovieGenre.visibility = View.GONE
+                binding.layoutEmpty.visibility = View.GONE
+                binding.layoutEmptyListMovies.visibility = View.VISIBLE
+
+            }
+            // Tem dados para mostrar! Esconde tudo e mostra o RecyclerView
+            else -> {
+                binding.rvMovieGenre.visibility = View.VISIBLE
+                binding.layoutEmpty.visibility = View.GONE
+
+            }
+        }
+    }
+
+    // resolver o problema de listagem de filmes vazia
 
 
     override fun onDestroyView() {

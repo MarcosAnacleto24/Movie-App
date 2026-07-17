@@ -13,6 +13,7 @@ import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentLoginBinding
 import com.example.movieapp.presenter.main.activity.MainActivity
 import com.example.movieapp.util.StateView
+import com.example.movieapp.util.animateNavigation
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
 import com.example.movieapp.util.isEmailValid
@@ -54,7 +55,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.btnForgot.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_forgotFragment)
+            findNavController().animateNavigation(R.id.action_loginFragment_to_forgotFragment)
         }
 
         Glide.with(requireContext())

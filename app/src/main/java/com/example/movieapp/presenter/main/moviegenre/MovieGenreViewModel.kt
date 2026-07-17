@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import com.example.movieapp.domain.usecase.movie.GetMoviesByGenreUseCase
 import com.example.movieapp.domain.usecase.movie.SearchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,8 +12,10 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
@@ -53,19 +56,31 @@ class MovieGenreViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchMoviesFlow = _searchQuery
-        .flatMapLatest { query ->
-            if (query.isNotEmpty()) {
-                searchMoviesUseCase(query).cachedIn(viewModelScope)
-            } else {
-                flowOf(PagingData.empty())
-            }
+    val searchMoviesFlow = combine(_searchQuery, _currentGenreId) { query, genreId ->
+        Pair(query, genreId)
+    }
+    .flatMapLatest { (query, genreId) ->
+        if (query.isNotEmpty()) {
+            searchMoviesUseCase(query)
+                .cachedIn(viewModelScope)
+                .map { pagingData ->
+                    if (genreId != null) {
+                        pagingData.filter { movie ->
+                            movie.genreIds?.contains(genreId) == true
+                        }
+                    } else {
+                        pagingData
+                    }
+                }
+        } else {
+            flowOf(PagingData.empty())
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily, // Segura os dados e a posição do scroll na ViewModel
-            initialValue = PagingData.empty()
-        )
+    }
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily, // Segura os dados e a posição do scroll na ViewModel
+        initialValue = PagingData.empty()
+    )
 
     // O fragmento chama essa função para atualizar o termo de busca
     fun searchMovies(query: String) {
