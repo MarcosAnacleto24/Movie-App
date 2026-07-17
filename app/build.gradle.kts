@@ -98,6 +98,9 @@ dependencies {
     // SwipeRefreshLayout
     implementation(libs.androidx.swiperefreshlayout)
 
+    // Lottie Animation
+    implementation(libs.lottie)
+
     // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
