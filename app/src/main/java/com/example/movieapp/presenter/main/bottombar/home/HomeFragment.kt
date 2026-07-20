@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.movieapp.MainGraphDirections
 import com.example.movieapp.databinding.FragmentHomeBinding
@@ -13,6 +16,8 @@ import com.example.movieapp.presenter.main.bottombar.home.adapter.GenreMovieAdap
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.animateNavigation
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -38,32 +43,38 @@ class HomeFragment : Fragment() {
 
         configRecyclerView()
 
-        getGenres()
+        observeGenres()
+
+        viewModel.fetchGenresIfNeeded()
 
     }
 
-    private fun getGenres() {
-        viewModel.getGenres().observe(viewLifecycleOwner) { stateView ->
-            when (stateView) {
-                is StateView.Loading -> {
-                    binding.shimmerViewContainer.visibility = View.VISIBLE
-                    binding.shimmerViewContainer.startShimmer()
-                    binding.rvHome.visibility = View.GONE
-                }
+    private fun observeGenres() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.genresState.collectLatest { stateView ->
+                    when (stateView) {
+                        is StateView.Loading -> {
+                            binding.shimmerViewContainer.visibility = View.VISIBLE
+                            binding.shimmerViewContainer.startShimmer()
+                            binding.rvHome.visibility = View.GONE
+                        }
 
-                is StateView.Success -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                    binding.rvHome.visibility = View.VISIBLE
+                        is StateView.Success -> {
+                            binding.shimmerViewContainer.stopShimmer()
+                            binding.shimmerViewContainer.visibility = View.GONE
+                            binding.rvHome.visibility = View.VISIBLE
 
-                    stateView.data?.let { genres ->
-                        genreMovieAdapter.submitList(genres)
+                            stateView.data?.let { genres ->
+                                genreMovieAdapter.submitList(genres)
+                            }
+                        }
+
+                        is StateView.Error -> {
+                            binding.shimmerViewContainer.stopShimmer()
+                            binding.shimmerViewContainer.visibility = View.GONE
+                        }
                     }
-                }
-
-                is StateView.Error -> {
-                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
                 }
             }
         }
