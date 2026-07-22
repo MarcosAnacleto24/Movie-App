@@ -1,7 +1,6 @@
 package com.example.movieapp.presenter.main.bottombar.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.domain.usecase.movie.GetGenresUseCase
 import com.example.movieapp.domain.usecase.movie.GetMoviesByGenreListUseCase

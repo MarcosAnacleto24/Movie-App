@@ -95,4 +95,10 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <!-- Estilo personalizado para controlar o halo de clique do Switch -->
+    <style name="CustomSwitchStyle" parent="Widget.Material3.CompoundButton.Switch">
+        <!-- Cor do halo quando pressionado/clicado -->
+        <item name="haloColor">@color/switch_halo_color</item>
+    </style>
+
 </resources>

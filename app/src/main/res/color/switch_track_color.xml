@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Quando Ativado -> Vermelho Suave/Transparente -->
+    <item android:color="#66E53935" android:state_checked="true" />
+
+    <!-- Quando Desativado -> Cinza Claro (Visível no Dark Mode!) -->
+    <item android:color="#E0E0E0" android:state_checked="false" />
+
+</selector>

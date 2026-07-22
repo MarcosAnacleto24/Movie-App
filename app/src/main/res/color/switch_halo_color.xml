@@ -1,0 +1,12 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Quando desativado E pressionado -> Cinza/Branco mais forte e visível sobre o fundo escuro -->
+    <item android:color="#80FFFFFF" android:state_checked="false" android:state_pressed="true" />
+    <item android:color="#80FFFFFF" android:state_checked="false" android:state_focused="true" />
+
+    <!-- Quando ativado E pressionado -> Vermelho bem visível -->
+    <item android:color="#80E53935" android:state_checked="true" android:state_pressed="true" />
+    <item android:color="#80E53935" android:state_checked="true" android:state_focused="true" />
+
+    <!-- Estado de repouso -->
+    <item android:color="@android:color/transparent"/>
+</selector>
