@@ -6,33 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".presenter.main.bottombar.profile.ProfileFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/ThemeToolbarSimpleSearchView"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextAppearance="@style/ToolbarTitleAppearance"
-        app:titleTextColor="@color/black">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:importantForAccessibility="no"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/ThemeToolbarSimpleSearchView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:fontFamily="@font/urbanist_700"
-            android:text="@string/title_menu_profile"
-            android:textColor="#212121"
-            android:textSize="24sp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextAppearance="@style/ToolbarTitleAppearance"
+            app:titleTextColor="@color/black">
 
-    </androidx.appcompat.widget.Toolbar>
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:fontFamily="@font/urbanist_700"
+                android:text="@string/title_menu_profile"
+                android:textColor="#212121"
+                android:textSize="24sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -41,13 +53,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/appbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="24dp"
+
             android:paddingBottom="32dp">
 
             <FrameLayout
@@ -56,16 +68,6 @@
                 android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp">
-
-                <ImageButton
-                    android:id="@+id/btn_edit_profile_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:background="@android:color/transparent"
-                    android:elevation="2dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_edit" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -119,6 +121,7 @@
                 android:id="@+id/btn_edit_profile"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="@drawable/ripple_effect"
@@ -163,6 +166,7 @@
                 android:id="@+id/btn_notification"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -205,9 +209,56 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_download"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/ripple_effect"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/img_icon_download"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_download_profile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/urbanist_600"
+                    android:text="@string/text_download_profile_fragment"
+                    android:textColor="#212121"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/img_arrow_download"
+                    app:layout_constraintStart_toEndOf="@+id/img_icon_download"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/img_arrow_download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_security"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -253,6 +304,7 @@
                 android:id="@+id/btn_language"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -308,9 +360,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container_dark_mode"
+                android:id="@+id/btn_dark_mode"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:layout_marginTop="8dp">
 
                 <ImageView
@@ -353,6 +406,7 @@
                 android:id="@+id/btn_help_center"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -398,6 +452,7 @@
                 android:id="@+id/btn_privacy_policy"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -443,6 +498,7 @@
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:paddingHorizontal="24dp"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:focusable="true"
