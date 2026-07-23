@@ -128,6 +128,17 @@
     <string name="text_hint_edit_sex_profile_edit_fragment">Sexo</string>
     <string name="text_hint_edit_country_profile_edit_fragment">País</string>
     <string name="text_button_update_profile_edit_fragment">Atualizar</string>
+    <string name="text_option_male">Masculino</string>
+    <string name="text_option_female">Feminino</string>
+    <string name="text_option_prefer_not_to_say">Prefiro não responder</string>
+    <string name="text_first_name_empty_profile_edit_fragment">Digite seu nome</string>
+    <string name="text_last_name_empty_profile_edit_fragment">Digite seu sobrenome</string>
+    <string name="text_telephone_empty_or_invalid_profile_edit_fragment">Digite um telefone válido</string>
+    <string name="text_country_empty_profile_edit_fragment">Selecione seu país</string>
+    <string name="text_sex_empty_profile_edit_fragment">Selecione seu sexo</string>
+
+
+
 
     <!--    BottomSheetLogout-->
     <string name="bottom_sheet_logout_title">Sair</string>

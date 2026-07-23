@@ -101,6 +101,10 @@ dependencies {
     // Lottie Animation
     implementation(libs.lottie)
 
+    //https://github.com/VicMikhailau/MaskedEditText
+    implementation(libs.maskededittext)
+
+
     // Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -133,13 +133,16 @@
                 android:autofillHints="emailAddress"
                 android:drawableEnd="@drawable/ic_email"
                 android:drawablePadding="12dp"
+                android:enabled="false"
+                android:focusable="false"
+                android:alpha="0.6"
                 android:hint="@string/text_hint_edit_email_profile_edit_fragment"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_last_name" />
 
-            <EditText
+            <com.vicmikhailau.maskededittext.MaskedEditText
                 android:id="@+id/edit_telephone"
                 style="@style/ThemeEditText"
                 android:layout_width="match_parent"
@@ -148,35 +151,54 @@
                 android:autofillHints="phone"
                 android:hint="@string/text_hint_edit_telephone_profile_edit_fragment"
                 android:inputType="phone"
+                app:mask="(##)###-######"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_email" />
 
-            <EditText
-                android:id="@+id/edit_sex"
-                style="@style/ThemeEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_sex"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:autofillHints=""
-                android:hint="@string/text_hint_edit_sex_profile_edit_fragment"
-                android:inputType="text"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_telephone" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_telephone">
 
-            <EditText
-                android:id="@+id/edit_country"
-                style="@style/ThemeEditText"
+                <AutoCompleteTextView
+                    android:id="@+id/spinner_sex"
+                    style="@style/ThemeEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/text_hint_edit_sex_profile_edit_fragment"
+                    android:inputType="none"
+                    android:paddingEnd="16dp"
+                    tools:ignore="RtlSymmetry" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_country"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:autofillHints="postalAddress"
-                android:hint="@string/text_hint_edit_country_profile_edit_fragment"
-                android:inputType="textPostalAddress"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_sex" />
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_sex">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinner_country"
+                    style="@style/ThemeEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/text_hint_edit_country_profile_edit_fragment"
+                    android:inputType="none"
+                    android:paddingEnd="16dp"
+                    tools:ignore="RtlSymmetry" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_update"
@@ -188,7 +210,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_country" />
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_country" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
