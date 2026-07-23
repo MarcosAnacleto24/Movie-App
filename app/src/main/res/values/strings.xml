@@ -129,7 +129,11 @@
     <string name="text_hint_edit_country_profile_edit_fragment">País</string>
     <string name="text_button_update_profile_edit_fragment">Atualizar</string>
 
-
+    <!--    BottomSheetLogout-->
+    <string name="bottom_sheet_logout_title">Sair</string>
+    <string name="bottom_sheet_logout_message">Tem certeza que deseja sair?</string>
+    <string name="bottom_sheet_logout_button_logout">Sim, Sair</string>
+    <string name="bottom_sheet_logout_button_cancel">Cancelar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

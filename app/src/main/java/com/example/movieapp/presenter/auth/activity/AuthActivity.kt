@@ -6,6 +6,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
+import com.example.movieapp.R
 import com.example.movieapp.databinding.ActivityAuthBinding
 import com.example.movieapp.presenter.main.activity.MainActivity
 import com.example.movieapp.util.FirebaseHelper
@@ -27,7 +30,30 @@ class AuthActivity : AppCompatActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initAnimationSplash(splashScreenInstance)
+        // VERIFICA SE VEIO DA AÇÃO DE LOGOUT
+        val showLogin = intent.getBooleanExtra("SHOW_LOGIN", false)
+
+        if (showLogin) {
+            // Se veio do logout, esconde a Splash e vai direto pro Login sem esperar animações
+            binding.splashAnimationContainer.visibility = View.GONE
+            binding.navHostFragment.visibility = View.VISIBLE
+            binding.navHostFragment.alpha = 1f
+
+            val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController = navHostFragment.navController
+
+            // Configura a navegação para REMOVER a onboardingFragment da pilha
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.onboardingFragment, true) // 'true' remove o onboardingFragment da memória!
+                .build()
+
+            // Navega para o authentication aplicando as opções de remoção da pilha
+            navController.navigate(R.id.authentication, null, navOptions)
+        } else {
+            // Fluxo normal com animação de Splash
+            initAnimationSplash(splashScreenInstance)
+        }
 
     }
 
