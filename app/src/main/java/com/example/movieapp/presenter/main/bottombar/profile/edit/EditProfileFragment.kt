@@ -13,12 +13,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
+import com.example.movieapp.databinding.BottomSheetSelectImageBinding
 import com.example.movieapp.databinding.FragmentEditProfileBinding
 import com.example.movieapp.domain.model.user.User
 import com.example.movieapp.util.StateView
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
 import com.example.movieapp.util.showSnackBar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -104,6 +106,11 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun initListeners() {
+
+        binding.btnEditProfileImage.setOnClickListener {
+            showBottomSheetSelectImage()
+        }
+
         binding.btnUpdate.setOnClickListener {
             validateData()
         }
@@ -144,6 +151,25 @@ class EditProfileFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun showBottomSheetSelectImage() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
+        val bottomSheetBinding = BottomSheetSelectImageBinding.inflate(layoutInflater, null, false)
+
+        bottomSheetBinding.btnTakePhoto.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            // Lógica para tirar uma foto
+        }
+
+        bottomSheetBinding.btnChooseGallery.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            // Lógica para escolher uma imagem da galeria
+        }
+
+
+        bottomSheetDialog.setContentView(bottomSheetBinding.root)
+        bottomSheetDialog.show()
     }
 
     private fun updateUser(user: User) {

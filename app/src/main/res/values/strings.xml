@@ -141,8 +141,9 @@
     <string name="text_get_user_error_profile_edit_fragment">Erro ao obter usuário</string>
 
 
-
-
+    <!--    BottomSheetSelectImage-->
+    <string name="bottom_sheet_select_image_button_take_photo">Tirar foto</string>
+    <string name="bottom_sheet_select_image_button_choose_gallery">Escolher foto</string>
 
 
     <!--    BottomSheetLogout-->
