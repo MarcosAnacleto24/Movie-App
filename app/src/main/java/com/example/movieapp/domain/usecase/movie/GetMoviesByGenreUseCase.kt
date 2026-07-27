@@ -1,7 +1,7 @@
 package com.example.movieapp.domain.usecase.movie
 
 import androidx.paging.PagingData
-import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.movie.Movie
 import com.example.movieapp.domain.repository.movie.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

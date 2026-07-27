@@ -136,6 +136,9 @@
     <string name="text_telephone_empty_or_invalid_profile_edit_fragment">Digite um telefone válido</string>
     <string name="text_country_empty_profile_edit_fragment">Selecione seu país</string>
     <string name="text_sex_empty_profile_edit_fragment">Selecione seu sexo</string>
+    <string name="text_update_success_profile_edit_fragment">Perfil atualizado com sucesso</string>
+    <string name="text_update_error_profile_edit_fragment">Erro ao atualizar perfil</string>
+
 
 
 

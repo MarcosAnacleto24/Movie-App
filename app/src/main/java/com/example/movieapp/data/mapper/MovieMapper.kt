@@ -1,23 +1,23 @@
 package com.example.movieapp.data.mapper
 
 import com.example.movieapp.data.local.entity.MovieEntity
-import com.example.movieapp.data.model.AuthorDetailsResponse
-import com.example.movieapp.data.model.BasePaginationRemote
-import com.example.movieapp.data.model.CountryResponse
-import com.example.movieapp.data.model.CreditResponse
-import com.example.movieapp.data.model.GenreResponse
-import com.example.movieapp.data.model.GenresResponse
-import com.example.movieapp.data.model.MovieResponse
-import com.example.movieapp.data.model.MovieReviewResponse
-import com.example.movieapp.data.model.PersonResponse
-import com.example.movieapp.domain.model.AuthorDetails
-import com.example.movieapp.domain.model.Country
-import com.example.movieapp.domain.model.Credit
-import com.example.movieapp.domain.model.Genre
-import com.example.movieapp.domain.model.Movie
-import com.example.movieapp.domain.model.MovieReview
-import com.example.movieapp.domain.model.Pagination
-import com.example.movieapp.domain.model.Person
+import com.example.movieapp.data.model.movie.AuthorDetailsResponse
+import com.example.movieapp.data.model.movie.BasePaginationRemote
+import com.example.movieapp.data.model.movie.CountryResponse
+import com.example.movieapp.data.model.movie.CreditResponse
+import com.example.movieapp.data.model.movie.GenreResponse
+import com.example.movieapp.data.model.movie.GenresResponse
+import com.example.movieapp.data.model.movie.MovieResponse
+import com.example.movieapp.data.model.movie.MovieReviewResponse
+import com.example.movieapp.data.model.movie.PersonResponse
+import com.example.movieapp.domain.model.movie.AuthorDetails
+import com.example.movieapp.domain.model.movie.Country
+import com.example.movieapp.domain.model.movie.Credit
+import com.example.movieapp.domain.model.movie.Genre
+import com.example.movieapp.domain.model.movie.Movie
+import com.example.movieapp.domain.model.movie.MovieReview
+import com.example.movieapp.domain.model.movie.Pagination
+import com.example.movieapp.domain.model.movie.Person
 import com.example.movieapp.presenter.model.GenrePresentation
 
 fun GenreResponse.toPresentation(): GenrePresentation {

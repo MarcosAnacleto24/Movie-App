@@ -4,7 +4,7 @@ import com.example.movieapp.data.local.dao.MovieDao
 import com.example.movieapp.data.mapper.toDomain
 import com.example.movieapp.data.mapper.toEntity
 import com.example.movieapp.domain.local.repository.MovieLocalRepository
-import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.movie.Movie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

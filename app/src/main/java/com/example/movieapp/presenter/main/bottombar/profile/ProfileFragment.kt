@@ -11,6 +11,7 @@ import com.example.movieapp.R
 import com.example.movieapp.databinding.BottomSheetLogoutBinding
 import com.example.movieapp.databinding.FragmentProfileBinding
 import com.example.movieapp.presenter.auth.activity.AuthActivity
+import com.example.movieapp.util.animateNavigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -41,7 +42,7 @@ class ProfileFragment : Fragment() {
     private fun initListeners() {
 
         binding.btnEditProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_menu_profile_to_editProfileFragment)
+            findNavController().animateNavigation(R.id.action_menu_profile_to_editProfileFragment)
         }
 
         binding.btnNotification.setOnClickListener {

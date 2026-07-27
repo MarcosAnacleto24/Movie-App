@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.CastItemBinding
-import com.example.movieapp.domain.model.Person
+import com.example.movieapp.domain.model.movie.Person
 import com.example.movieapp.util.circularProgressDrawable
 
 class CastAdapter(): ListAdapter<Person, CastAdapter.MyViewHolder>(DIFF_CALLBACK) {

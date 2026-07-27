@@ -6,17 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentEditProfileBinding
+import com.example.movieapp.domain.model.user.User
+import com.example.movieapp.util.StateView
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
 import com.example.movieapp.util.showSnackBar
-import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
+@AndroidEntryPoint
 class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: EditProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +59,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun setupUserData() {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        binding.editEmail.setText(currentUser?.email ?: "")
+        binding.editEmail.setText(viewModel.getUserEmail())
     }
 
     private fun setupSexDropdown() {
@@ -92,6 +105,10 @@ class EditProfileFragment : Fragment() {
         binding.btnUpdate.setOnClickListener {
             validateData()
         }
+
+        Glide.with(requireContext())
+            .load(R.drawable.ic_loading)
+            .into(binding.progressLoading)
     }
 
     private fun validateData() {
@@ -111,21 +128,48 @@ class EditProfileFragment : Fragment() {
 
             else -> {
                 hideKeyboard()
-                updateUser(firstName, lastName, telephone, sex, country)
+
+                val user = User(
+                    firstName = firstName,
+                    lastName = lastName,
+                    email = viewModel.getUserEmail(),
+                    telephone = telephone,
+                    sex = sex,
+                    country = country
+                )
+
+                updateUser(user)
             }
         }
 
     }
 
-    private fun updateUser(
-        firstName: String,
-        lastName: String,
-        telephone: String,
-        sex: String,
-        country: String
-    ) {
+    private fun updateUser(user: User) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.updateUser(user).collect { stateView ->
+                    when (stateView) {
+                        is StateView.Loading -> {
+                            binding.progressLoading.visibility = View.VISIBLE
+                        }
+                        is StateView.Success -> {
+                            binding.progressLoading.visibility = View.GONE
+                            showSnackBar(message = R.string.text_update_success_profile_edit_fragment)
 
+                            delay(1000.milliseconds)
+
+                            findNavController().popBackStack()
+                        }
+                        is StateView.Error -> {
+                            binding.progressLoading.visibility = View.GONE
+                            showSnackBar(message = R.string.text_update_error_profile_edit_fragment)
+                        }
+                    }
+                }
+            }
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

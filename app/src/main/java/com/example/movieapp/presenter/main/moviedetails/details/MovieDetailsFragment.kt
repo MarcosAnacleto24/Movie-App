@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.DialogDownloadingBinding
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
-import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.movie.Movie
 import com.example.movieapp.presenter.main.moviedetails.Trailers.TrailersFragment
 import com.example.movieapp.presenter.main.moviedetails.adapter.CastAdapter
 import com.example.movieapp.presenter.main.moviedetails.adapter.ViewPagerAdapter

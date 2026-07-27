@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.ItemCommentReviewBinding
-import com.example.movieapp.domain.model.MovieReview
+import com.example.movieapp.domain.model.movie.MovieReview
 import com.example.movieapp.util.circularProgressDrawable
 import com.example.movieapp.util.formatCommentDate
 

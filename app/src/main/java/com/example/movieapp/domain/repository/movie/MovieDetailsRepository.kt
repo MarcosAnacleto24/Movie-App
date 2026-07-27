@@ -1,9 +1,9 @@
 package com.example.movieapp.domain.repository.movie
 
-import com.example.movieapp.domain.model.Credit
-import com.example.movieapp.domain.model.Movie
-import com.example.movieapp.domain.model.MovieReview
-import com.example.movieapp.domain.model.Pagination
+import com.example.movieapp.domain.model.movie.Credit
+import com.example.movieapp.domain.model.movie.Movie
+import com.example.movieapp.domain.model.movie.MovieReview
+import com.example.movieapp.domain.model.movie.Pagination
 
 interface MovieDetailsRepository {
 

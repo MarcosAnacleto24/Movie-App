@@ -8,8 +8,8 @@ import com.example.movieapp.data.mapper.toDomain
 import com.example.movieapp.data.mapper.toPresentation
 import com.example.movieapp.data.paging.MovieByGenrePagingSource
 import com.example.movieapp.data.paging.SearchMoviesPagingSource
-import com.example.movieapp.domain.model.Movie
-import com.example.movieapp.domain.model.Pagination
+import com.example.movieapp.domain.model.movie.Movie
+import com.example.movieapp.domain.model.movie.Pagination
 import com.example.movieapp.domain.repository.movie.MovieRepository
 import com.example.movieapp.presenter.model.GenrePresentation
 import kotlinx.coroutines.flow.Flow

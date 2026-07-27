@@ -1,4 +1,4 @@
-package com.example.movieapp.domain.model
+package com.example.movieapp.domain.model.movie
 
 data class Pagination<T>(
     val page: Int?,

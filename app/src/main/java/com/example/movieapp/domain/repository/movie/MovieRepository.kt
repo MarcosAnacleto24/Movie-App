@@ -1,8 +1,8 @@
 package com.example.movieapp.domain.repository.movie
 
 import androidx.paging.PagingData
-import com.example.movieapp.domain.model.Movie
-import com.example.movieapp.domain.model.Pagination
+import com.example.movieapp.domain.model.movie.Movie
+import com.example.movieapp.domain.model.movie.Pagination
 import com.example.movieapp.presenter.model.GenrePresentation
 import kotlinx.coroutines.flow.Flow
 

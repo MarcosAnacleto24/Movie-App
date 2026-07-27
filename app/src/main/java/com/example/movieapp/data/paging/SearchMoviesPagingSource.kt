@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.movieapp.data.api.ServiceApi
 import com.example.movieapp.data.mapper.toDomain
-import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.movie.Movie
 
 class SearchMoviesPagingSource(
     private val serviceApi: ServiceApi,

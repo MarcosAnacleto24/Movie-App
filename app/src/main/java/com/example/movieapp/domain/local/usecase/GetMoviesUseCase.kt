@@ -1,7 +1,7 @@
 package com.example.movieapp.domain.local.usecase
 
 import com.example.movieapp.domain.local.repository.MovieLocalRepository
-import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.movie.Movie
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

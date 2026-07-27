@@ -1,6 +1,6 @@
 package com.example.movieapp.domain.local.repository
 
-import com.example.movieapp.domain.model.Movie
+import com.example.movieapp.domain.model.movie.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieLocalRepository {
