@@ -49,6 +49,8 @@ class EditProfileFragment : Fragment() {
 
         initUI()
 
+        getUser()
+
         initListeners()
     }
 
@@ -168,6 +170,42 @@ class EditProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getUser() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getUser().collect { stateView ->
+                    when (stateView) {
+                        is StateView.Loading -> {
+                            binding.progressLoading.visibility = View.VISIBLE
+                        }
+
+                        is StateView.Success -> {
+                            binding.progressLoading.visibility = View.GONE
+                            stateView.data?.let { user ->
+                                configData(user)
+                            }
+                        }
+
+                        is StateView.Error -> {
+                            binding.progressLoading.visibility = View.GONE
+                            showSnackBar(message = R.string.text_get_user_error_profile_edit_fragment)
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun configData(user: User) {
+        binding.editFirstName.setText(user.firstName)
+        binding.editLastName.setText(user.lastName)
+        binding.editTelephone.setText(user.telephone)
+        binding.spinnerSex.setText(user.sex, false)
+        binding.spinnerCountry.setText(user.country, false)
+
     }
 
 

@@ -1,5 +1,9 @@
 package com.example.movieapp.domain.model.user
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class User(
     val id: String? = null,
     val photoUrl: String? = null,
@@ -10,5 +14,4 @@ data class User(
     val sex: String? = null,
     val country: String? = null
 
-
-)
+): Parcelable
