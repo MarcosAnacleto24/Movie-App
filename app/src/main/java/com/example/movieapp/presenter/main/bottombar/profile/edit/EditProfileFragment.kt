@@ -1,10 +1,19 @@
 package com.example.movieapp.presenter.main.bottombar.profile.edit
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.databinding.BottomSheetSelectImageBinding
+import com.example.movieapp.databinding.BottomSheetPermissionDeniedBinding
 import com.example.movieapp.databinding.FragmentEditProfileBinding
 import com.example.movieapp.domain.model.user.User
 import com.example.movieapp.util.StateView
@@ -31,8 +41,34 @@ import kotlin.time.Duration.Companion.milliseconds
 class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: EditProfileViewModel by viewModels()
+
+    private var selectedImageUri: Uri? = null
+
+    // Photo Picker Nativo (Android 13+ / API 33+)
+    private val pickMediaLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        uri?.let { handleSelectedImage(it) }
+    }
+
+    // Galeria Legada (Android 12 ou inferior)
+    private val pickGalleryLegacyLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let { handleSelectedImage(it) }
+    }
+
+    // Pedido de Permissão em Runtime (Android 12-)
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            pickGalleryLegacyLauncher.launch("image/*")
+        } else {
+            showBottomSheetPermissionDenied()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -164,12 +200,59 @@ class EditProfileFragment : Fragment() {
 
         bottomSheetBinding.btnChooseGallery.setOnClickListener {
             bottomSheetDialog.dismiss()
-            // Lógica para escolher uma imagem da galeria
+            openGalleryWithPermissionCheck()
         }
 
 
         bottomSheetDialog.setContentView(bottomSheetBinding.root)
         bottomSheetDialog.show()
+    }
+
+    // Função responsável por decidir se pede permissão ou se abre o Photo Picker
+    private fun openGalleryWithPermissionCheck() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13+: Abre direto o Photo Picker (sem pedir permissão)
+            pickMediaLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        } else {
+            // Android 12-: Verifica a permissão antes de abrir
+            val permission = Manifest.permission.READ_EXTERNAL_STORAGE
+            if (ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED) {
+                pickGalleryLegacyLauncher.launch("image/*")
+            } else {
+                requestPermissionLauncher.launch(permission)
+            }
+        }
+    }
+
+    // Processa a URI da imagem selecionada
+    private fun handleSelectedImage(uri: Uri) {
+        selectedImageUri = uri
+        Glide.with(this)
+            .load(uri)
+            .into(binding.imageProfile) // Substitua pelo ID do seu ImageView de foto
+    }
+
+    // Exibe aviso caso a permissão seja negada
+    private fun showBottomSheetPermissionDenied() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
+        val permissionBinding = BottomSheetPermissionDeniedBinding.inflate(layoutInflater, null, false)
+
+        permissionBinding.btnOpenSettings.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            openAppSettings()
+        }
+
+        bottomSheetDialog.setContentView(permissionBinding.root)
+        bottomSheetDialog.show()
+    }
+
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", requireContext().packageName, null)
+        }
+        startActivity(intent)
     }
 
     private fun updateUser(user: User) {

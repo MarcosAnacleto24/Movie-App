@@ -145,6 +145,12 @@
     <string name="bottom_sheet_select_image_button_take_photo">Tirar foto</string>
     <string name="bottom_sheet_select_image_button_choose_gallery">Escolher foto</string>
 
+    <!--    BottomSheetPermissionDenied-->
+    <string name="bottom_sheet_permission_denied_title">Acesso à Galeria Necessário</string>
+    <string name="bottom_sheet_permission_denied_message">Para escolher uma foto de perfil, você precisa permitir o acesso às imagens nas configurações do aplicativo.</string>
+    <string name="bottom_sheet_permission_denied_button_open_settings">Abrir Configurações</string>
+
+
 
     <!--    BottomSheetLogout-->
     <string name="bottom_sheet_logout_title">Sair</string>
