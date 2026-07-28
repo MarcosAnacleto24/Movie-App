@@ -3,9 +3,11 @@ package com.example.movieapp.presenter.main.bottombar.profile.edit
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -34,6 +37,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
+import java.util.Date
 import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -42,8 +47,30 @@ class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
     private val viewModel: EditProfileViewModel by viewModels()
-
     private var selectedImageUri: Uri? = null
+    private var tempCameraUri: Uri? = null
+
+    // Launcher para Capturar Foto da Câmera
+    private val takePictureLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            tempCameraUri?.let { uri ->
+                handleSelectedImage(uri)
+            }
+        }
+    }
+
+    // Pedido de Permissão da Câmera
+    private val requestCameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            openCamera()
+        } else {
+            showBottomSheetPermissionDenied()
+        }
+    }
 
     // Photo Picker Nativo (Android 13+ / API 33+)
     private val pickMediaLauncher = registerForActivityResult(
@@ -195,7 +222,7 @@ class EditProfileFragment : Fragment() {
 
         bottomSheetBinding.btnTakePhoto.setOnClickListener {
             bottomSheetDialog.dismiss()
-            // Lógica para tirar uma foto
+            checkCameraPermissionAndOpen()
         }
 
         bottomSheetBinding.btnChooseGallery.setOnClickListener {
@@ -208,7 +235,37 @@ class EditProfileFragment : Fragment() {
         bottomSheetDialog.show()
     }
 
-    // Função responsável por decidir se pede permissão ou se abre o Photo Picker
+    private fun checkCameraPermissionAndOpen() {
+        val permission = Manifest.permission.CAMERA
+        if (ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED) {
+            openCamera()
+        } else {
+            requestCameraPermissionLauncher.launch(permission)
+        }
+    }
+
+    // Gera o arquivo e abre o app de câmera nativo
+    private fun openCamera() {
+        val photoFile = createTempImageFile()
+        photoFile?.let { file ->
+            val uri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.fileProvider",
+                file
+            )
+            tempCameraUri = uri
+            takePictureLauncher.launch(uri)
+        }
+    }
+
+    // Cria o arquivo temporário na pasta de fotos do app
+    private fun createTempImageFile(): File? {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFileName = "JPEG_${timeStamp}_"
+        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(imageFileName, ".jpg", storageDir)
+    }
+
     private fun openGalleryWithPermissionCheck() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Android 13+: Abre direto o Photo Picker (sem pedir permissão)
@@ -231,10 +288,9 @@ class EditProfileFragment : Fragment() {
         selectedImageUri = uri
         Glide.with(this)
             .load(uri)
-            .into(binding.imageProfile) // Substitua pelo ID do seu ImageView de foto
+            .into(binding.imageProfile)
     }
 
-    // Exibe aviso caso a permissão seja negada
     private fun showBottomSheetPermissionDenied() {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         val permissionBinding = BottomSheetPermissionDeniedBinding.inflate(layoutInflater, null, false)
