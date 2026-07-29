@@ -1,6 +1,7 @@
 package com.example.movieapp.presenter.main.bottombar.profile.edit
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movieapp.domain.model.user.User
 import com.example.movieapp.domain.usecase.user.GetUserUseCase
 import com.example.movieapp.domain.usecase.user.UpdateUserUseCase
@@ -9,8 +10,13 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,23 +26,75 @@ class EditProfileViewModel @Inject constructor(
     private val userGetUserUseCase: GetUserUseCase
 ): ViewModel() {
 
+    private val _formError = MutableSharedFlow<EditProfileFormError?>()
+    val formError = _formError.asSharedFlow()
+
+    private val _updateUserState = MutableStateFlow<StateView<Unit>?>(null)
+    val updateUserState = _updateUserState.asStateFlow()
+
+    fun validateAndUpdateUser(
+        firstName: String,
+        lastName: String,
+        telephone: String,
+        sex: String,
+        country: String
+    ) {
+        viewModelScope.launch {
+            when {
+                firstName.isEmpty() -> {
+                    _formError.emit(EditProfileFormError.EmptyFirstName)
+                }
+                lastName.isEmpty() -> {
+                    _formError.emit(EditProfileFormError.EmptyLastName)
+                }
+                telephone.length != 11 -> {
+                    _formError.emit(EditProfileFormError.InvalidTelephone)
+                }
+
+                sex.isEmpty() -> {
+                    _formError.emit(EditProfileFormError.EmptySex)
+                }
+
+                country.isEmpty() -> {
+                    _formError.emit(EditProfileFormError.EmptyCountry)
+                }
+
+                else -> {
+                    val user = User(
+                        id = getUserId(),
+                        firstName = firstName,
+                        lastName = lastName,
+                        email = getUserEmail(),
+                        telephone = telephone,
+                        sex = sex,
+                        country = country
+                    )
+                    updateUser(user)
+                }
+            }
+        }
+    }
+
+    private fun updateUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _updateUserState.value = StateView.Loading()
+            try {
+                userUpdateUserUseCase(user)
+                _updateUserState.value = StateView.Success(Unit)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _updateUserState.value = StateView.Error(e.message)
+            }
+        }
+    }
+
+    fun getUserId(): String {
+        return firebaseAuth.currentUser?.uid ?: ""
+    }
+
     fun getUserEmail(): String {
         return firebaseAuth.currentUser?.email ?: ""
     }
-
-    fun updateUser(user: User): Flow<StateView<Unit>> = flow  {
-        emit(StateView.Loading())
-
-        try {
-            userUpdateUserUseCase(user)
-
-            emit(StateView.Success(Unit))
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(StateView.Error(e.message))
-        }
-    }.flowOn(Dispatchers.IO) // Garante a execução na thread I/O
 
 
     fun getUser(): Flow<StateView<User?>> = flow {

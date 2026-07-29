@@ -116,6 +116,10 @@ class EditProfileFragment : Fragment() {
 
         getUser()
 
+        observeFormErrors()
+
+        observeUpdateUserState()
+
         initListeners()
     }
 
@@ -183,6 +187,34 @@ class EditProfileFragment : Fragment() {
             .into(binding.progressLoading)
     }
 
+    private fun observeFormErrors() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.formError.collect { error ->
+                    when (error) {
+                        is EditProfileFormError.EmptyFirstName -> {
+                            showSnackBar(message = R.string.text_first_name_empty_profile_edit_fragment)
+                        }
+                        is EditProfileFormError.EmptyLastName -> {
+                            showSnackBar(message = R.string.text_last_name_empty_profile_edit_fragment)
+                        }
+                        is EditProfileFormError.InvalidTelephone -> {
+                            showSnackBar(message = R.string.text_telephone_empty_or_invalid_profile_edit_fragment)
+                        }
+                        is EditProfileFormError.EmptySex -> {
+                            showSnackBar(message = R.string.text_sex_empty_profile_edit_fragment)
+                        }
+                        is EditProfileFormError.EmptyCountry -> {
+                            showSnackBar(message = R.string.text_country_empty_profile_edit_fragment)
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
+
     private fun validateData() {
 
         val firstName = binding.editFirstName.text.toString().trim()
@@ -191,28 +223,9 @@ class EditProfileFragment : Fragment() {
         val sex = binding.spinnerSex.text.toString().trim()
         val country = binding.spinnerCountry.text.toString().trim()
 
-        when {
-            firstName.isEmpty() -> showSnackBar(message = R.string.text_first_name_empty_profile_edit_fragment)
-            lastName.isEmpty() -> showSnackBar(message = R.string.text_last_name_empty_profile_edit_fragment)
-            telephone.length != 11 -> showSnackBar(message = R.string.text_telephone_empty_or_invalid_profile_edit_fragment)
-            sex.isEmpty() -> showSnackBar(message = R.string.text_sex_empty_profile_edit_fragment)
-            country.isEmpty() -> showSnackBar(message = R.string.text_country_empty_profile_edit_fragment)
+        hideKeyboard()
 
-            else -> {
-                hideKeyboard()
-
-                val user = User(
-                    firstName = firstName,
-                    lastName = lastName,
-                    email = viewModel.getUserEmail(),
-                    telephone = telephone,
-                    sex = sex,
-                    country = country
-                )
-
-                updateUser(user)
-            }
-        }
+        viewModel.validateAndUpdateUser(firstName, lastName, telephone, sex, country)
 
     }
 
@@ -311,10 +324,10 @@ class EditProfileFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun updateUser(user: User) {
+    private fun observeUpdateUserState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.updateUser(user).collect { stateView ->
+                viewModel.updateUserState.collect { stateView ->
                     when (stateView) {
                         is StateView.Loading -> {
                             binding.progressLoading.visibility = View.VISIBLE
@@ -324,13 +337,13 @@ class EditProfileFragment : Fragment() {
                             showSnackBar(message = R.string.text_update_success_profile_edit_fragment)
 
                             delay(1000.milliseconds)
-
                             findNavController().popBackStack()
                         }
                         is StateView.Error -> {
                             binding.progressLoading.visibility = View.GONE
                             showSnackBar(message = R.string.text_update_error_profile_edit_fragment)
                         }
+                        null -> {} // Estado inicial neutro
                     }
                 }
             }
