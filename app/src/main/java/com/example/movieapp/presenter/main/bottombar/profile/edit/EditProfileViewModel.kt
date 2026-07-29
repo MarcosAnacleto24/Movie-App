@@ -1,10 +1,12 @@
 package com.example.movieapp.presenter.main.bottombar.profile.edit
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.domain.model.user.User
 import com.example.movieapp.domain.usecase.user.GetUserUseCase
 import com.example.movieapp.domain.usecase.user.UpdateUserUseCase
+import com.example.movieapp.domain.usecase.user.UploadProfileImageUseCase
 import com.example.movieapp.util.StateView
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val userUpdateUserUseCase: UpdateUserUseCase,
+    private val uploadProfileImageUseCase: UploadProfileImageUseCase,
     private val firebaseAuth: FirebaseAuth,
     private val userGetUserUseCase: GetUserUseCase
 ): ViewModel() {
@@ -37,7 +40,8 @@ class EditProfileViewModel @Inject constructor(
         lastName: String,
         telephone: String,
         sex: String,
-        country: String
+        country: String,
+        imageUri: Uri?
     ) {
         viewModelScope.launch {
             when {
@@ -69,8 +73,32 @@ class EditProfileViewModel @Inject constructor(
                         sex = sex,
                         country = country
                     )
-                    updateUser(user)
+
+                    if (imageUri != null) {
+                        uploadImageAndSaveUser(user, imageUri)
+                    } else {
+                        updateUser(user)
+                    }
+
                 }
+            }
+        }
+    }
+
+    private fun uploadImageAndSaveUser(user: User, imageUri: Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _updateUserState.value = StateView.Loading()
+            try {
+                // Chamada do UseCase/Repository que faz upload no Storage
+                 val photoUrl = uploadProfileImageUseCase(imageUri)
+                 val updatedUser = user.copy(photoUrl = photoUrl)
+
+                 userUpdateUserUseCase(updatedUser)
+
+                _updateUserState.value = StateView.Success(Unit)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _updateUserState.value = StateView.Error(e.message)
             }
         }
     }

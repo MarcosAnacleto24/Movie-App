@@ -30,6 +30,7 @@ import com.example.movieapp.databinding.BottomSheetPermissionDeniedBinding
 import com.example.movieapp.databinding.FragmentEditProfileBinding
 import com.example.movieapp.domain.model.user.User
 import com.example.movieapp.util.StateView
+import com.example.movieapp.util.circularProgressDrawable
 import com.example.movieapp.util.hideKeyboard
 import com.example.movieapp.util.initToolbar
 import com.example.movieapp.util.showSnackBar
@@ -225,7 +226,7 @@ class EditProfileFragment : Fragment() {
 
         hideKeyboard()
 
-        viewModel.validateAndUpdateUser(firstName, lastName, telephone, sex, country)
+        viewModel.validateAndUpdateUser(firstName, lastName, telephone, sex, country, selectedImageUri)
 
     }
 
@@ -383,6 +384,20 @@ class EditProfileFragment : Fragment() {
         binding.editTelephone.setText(user.telephone)
         binding.spinnerSex.setText(user.sex, false)
         binding.spinnerCountry.setText(user.country, false)
+
+
+        if (!user.photoUrl.isNullOrEmpty()) {
+
+            Glide.with(this)
+                .load(user.photoUrl)
+            .placeholder(binding.root.context.circularProgressDrawable())
+            .error(R.drawable.image_profile_error)
+            .into(binding.imageProfile)
+        } else {
+
+            binding.imageProfile.setImageResource(R.drawable.image_profile_error)
+        }
+
 
     }
 
