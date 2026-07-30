@@ -7,8 +7,8 @@ import com.example.movieapp.domain.model.user.User
 import com.example.movieapp.domain.usecase.user.GetUserUseCase
 import com.example.movieapp.domain.usecase.user.UpdateUserUseCase
 import com.example.movieapp.domain.usecase.user.UploadProfileImageUseCase
+import com.example.movieapp.util.IFirebaseHelper
 import com.example.movieapp.util.StateView
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -25,10 +25,11 @@ import javax.inject.Inject
 class EditProfileViewModel @Inject constructor(
     private val userUpdateUserUseCase: UpdateUserUseCase,
     private val uploadProfileImageUseCase: UploadProfileImageUseCase,
-    private val firebaseAuth: FirebaseAuth,
-    private val userGetUserUseCase: GetUserUseCase
+    private val firebaseHelper: IFirebaseHelper,
+    private val getUserUseCase: GetUserUseCase
 ): ViewModel() {
 
+    private var currentUser: User? = null
     private val _formError = MutableSharedFlow<EditProfileFormError?>()
     val formError = _formError.asSharedFlow()
 
@@ -71,7 +72,8 @@ class EditProfileViewModel @Inject constructor(
                         email = getUserEmail(),
                         telephone = telephone,
                         sex = sex,
-                        country = country
+                        country = country,
+                        photoUrl = currentUser?.photoUrl
                     )
 
                     if (imageUri != null) {
@@ -117,11 +119,11 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun getUserId(): String {
-        return firebaseAuth.currentUser?.uid ?: ""
+        return firebaseHelper.getUserId()
     }
 
     fun getUserEmail(): String {
-        return firebaseAuth.currentUser?.email ?: ""
+        return firebaseHelper.getUserEmail()
     }
 
 
@@ -129,7 +131,11 @@ class EditProfileViewModel @Inject constructor(
         emit(StateView.Loading())
 
         try {
-            val user = userGetUserUseCase()
+            val user = getUserUseCase()
+
+            if (user != null) {
+                currentUser = user
+            }
 
             emit(StateView.Success(user))
 

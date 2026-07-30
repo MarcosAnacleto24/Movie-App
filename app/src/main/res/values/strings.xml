@@ -118,6 +118,9 @@
     <string name="text_helper_center_profile_fragment">Centro de ajuda</string>
     <string name="text_privacy_policy_profile_fragment">Política de privacidade</string>
     <string name="text_logout_profile_fragment">Sair</string>
+    <string name="text_get_user_error_profile_fragment">Erro ao obter usuário</string>
+    <string name="text_user_name_profile_fragment">%1$s %2$s</string>
+
 
     <!--    ProfileEditFragment-->
     <string name="text_title_profile_edit_fragment">Editar perfil</string>
@@ -149,8 +152,7 @@
     <string name="bottom_sheet_permission_denied_title">Acesso Necessário</string>
     <string name="bottom_sheet_permission_denied_message">Para alterar sua foto de perfil, você precisa conceder as permissões necessárias nas configurações do aplicativo.</string>
     <string name="bottom_sheet_permission_denied_button_open_settings">Abrir Configurações</string>
-
-
+    
 
     <!--    BottomSheetLogout-->
     <string name="bottom_sheet_logout_title">Sair</string>

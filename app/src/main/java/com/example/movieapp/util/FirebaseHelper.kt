@@ -13,5 +13,7 @@ class  FirebaseHelper @Inject constructor(
 
     override fun getUserId() = auth.currentUser?.uid ?: ""
 
+    override fun getUserEmail() = auth.currentUser?.email ?: ""
+
 
 }

@@ -6,4 +6,6 @@ interface IFirebaseHelper {
     fun getAuth(): FirebaseAuth
     fun isAuthenticated(): Boolean
     fun getUserId(): String
+
+    fun getUserEmail(): String
 }
