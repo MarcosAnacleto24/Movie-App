@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_bookmark"
+                    android:src="@drawable/ic_bookmark_line"
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <ImageButton

@@ -44,6 +44,8 @@ class MovieDetailsFragment : Fragment() {
 
     private lateinit var movie: Movie
 
+    private var isFavorite = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,6 +75,10 @@ class MovieDetailsFragment : Fragment() {
     private fun initListeners() {
         binding.btnDownload.setOnClickListener {
             showDialogDownloading()
+        }
+
+        binding.btnBookmark.setOnClickListener {
+            toggleFavorite()
         }
     }
 
@@ -109,8 +115,10 @@ class MovieDetailsFragment : Fragment() {
                 is StateView.Success -> {
                     stateView.data?.let {
                         this.movie = it
+                        checkIfIsFavorite()
                         configData()
                     }
+
 
                 }
 
@@ -118,6 +126,51 @@ class MovieDetailsFragment : Fragment() {
 
                 }
             }
+        }
+    }
+
+    private fun checkIfIsFavorite() {
+        movie.id?.let { movieId ->
+            viewModel.isFavoriteMovie(movieId).observe(viewLifecycleOwner) { stateView ->
+                if (stateView is StateView.Success) {
+                    this.isFavorite = stateView.data ?: false
+                    setBookmarkIcon(this.isFavorite)
+                }
+            }
+        }
+    }
+
+    private fun toggleFavorite() {
+        if (::movie.isInitialized) {
+            val movieId = movie.id ?: return
+
+            if (isFavorite) {
+                // Se já era favorito, remove
+                viewModel.removeFavoriteMovie(movieId).observe(viewLifecycleOwner) { stateView ->
+                    if (stateView is StateView.Success) {
+                        isFavorite = false
+                        setBookmarkIcon(false)
+                    }
+                }
+            } else {
+                // Se não era favorito, salva
+                viewModel.saveFavoriteMovie(movie).observe(viewLifecycleOwner) { stateView ->
+                    if (stateView is StateView.Success) {
+                        isFavorite = true
+                        setBookmarkIcon(true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setBookmarkIcon(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.btnBookmark.setImageResource(R.drawable.ic_bookmark_fill) // Ícone preenchido
+            binding.btnBookmark.imageTintList = requireContext().getColorStateList(R.color.color_default)
+        } else {
+            binding.btnBookmark.setImageResource(R.drawable.ic_bookmark_line) // Ícone de linha/vazio
+            binding.btnBookmark.imageTintList = requireContext().getColorStateList(R.color.gray)
         }
     }
 

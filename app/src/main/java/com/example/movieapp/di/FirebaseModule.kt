@@ -38,5 +38,6 @@ class FirebaseModule {
     fun provideFirebaseStorage(): FirebaseStorage {
         return FirebaseStorage.getInstance()
     }
+
 }
 

@@ -10,6 +10,7 @@ import com.example.movieapp.data.model.movie.GenresResponse
 import com.example.movieapp.data.model.movie.MovieResponse
 import com.example.movieapp.data.model.movie.MovieReviewResponse
 import com.example.movieapp.data.model.movie.PersonResponse
+import com.example.movieapp.domain.model.favorite.FavoriteMovie
 import com.example.movieapp.domain.model.movie.AuthorDetails
 import com.example.movieapp.domain.model.movie.Country
 import com.example.movieapp.domain.model.movie.Credit
@@ -153,3 +154,14 @@ fun MovieEntity.toDomain(): Movie {
         runtime = this.runtime
     )
 }
+
+fun Movie.toFavoriteMovie(): FavoriteMovie {
+    return FavoriteMovie(
+        id = this.id,
+        title = this.title,
+        posterPath = this.posterPath ?: "", // Use uma string vazia como valor padrão se posterPath for nulo
+        genres = this.genres,
+        voteAverage = this.voteAverage
+    )
+}
+

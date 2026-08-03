@@ -2,10 +2,14 @@ package com.example.movieapp.util
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -174,6 +178,25 @@ private fun getNavOptions(animationType: NavAnimationType): NavOptions {
     }
 
     return builder.build()
+}
+
+
+fun View.applyWindowInsetsPadding(
+    applyTop: Boolean = true,
+    applyBottom: Boolean = true
+) {
+    ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        val bars = windowInsets.getInsets(
+            WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+        )
+
+        view.updatePadding(
+            top = if (applyTop) bars.top else view.paddingTop,
+            bottom = if (applyBottom) bars.bottom else view.paddingBottom
+        )
+
+        WindowInsetsCompat.CONSUMED
+    }
 }
 
 

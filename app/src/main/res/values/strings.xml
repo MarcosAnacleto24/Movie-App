@@ -65,9 +65,14 @@
     <string name="text_email_empty_forgot_fragment">Digite um e-mail válido</string>
     <string name="text_email_sent_forgot_fragment">Um e-mail de recuperação de senha foi enviado para sua caixa de entrada, por favor verifique.</string>
 
-    <!--    DonwloadFragment-->
+    <!--    DownloadFragment-->
     <string name="text_title_download_fragment">Baixados</string>
     <string name="text_message_empty_download_fragment">Você ainda não baixou nenhum filme. Vá para a página de detalhes do filme e clique no botão de download para baixar o filme.</string>
+
+    <!--    FavoriteFragment-->
+    <string name="text_title_favorite_fragment">Favoritos</string>
+    <string name="text_message_empty_favorite_fragment">Você ainda não adicionou nenhum filme aos favoritos. Vá para a página de detalhes do filme e clique no botão de adicionar aos favoritos.</string>
+
 
     <!--    DialogDownloading-->
     <string name="text_title_dialog_downloading">Download</string>
