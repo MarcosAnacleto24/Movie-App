@@ -386,16 +386,18 @@ class EditProfileFragment : Fragment() {
         binding.spinnerCountry.setText(user.country, false)
 
 
-        if (!user.photoUrl.isNullOrEmpty()) {
+        if (selectedImageUri == null) {
+            if (!user.photoUrl.isNullOrEmpty()) {
 
-            Glide.with(this)
-                .load(user.photoUrl)
-            .placeholder(binding.root.context.circularProgressDrawable())
-            .error(R.drawable.image_profile_error)
-            .into(binding.imageProfile)
-        } else {
+                Glide.with(this)
+                    .load(user.photoUrl)
+                    .placeholder(binding.root.context.circularProgressDrawable())
+                    .error(R.drawable.image_profile_error)
+                    .into(binding.imageProfile)
+            } else {
 
-            binding.imageProfile.setImageResource(R.drawable.image_profile_error)
+                binding.imageProfile.setImageResource(R.drawable.image_profile_error)
+            }
         }
 
 
