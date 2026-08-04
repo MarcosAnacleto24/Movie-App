@@ -46,6 +46,14 @@ com.example.movieapp/
 
 ---
 
+## 📱 Demonstração da Interface
+
+| Detalhes do Filme | Lista de Favoritos | Editar Perfil |
+| :---: | :---: | :---: |
+| <img width="1080" height="2400" alt="MovieDetails Movie App" src="https://github.com/user-attachments/assets/d9b281a6-519b-42c2-a1cf-e240b91a808d" /> | <img width="1080" height="2400" alt="MovieFavorite Movie App" src="https://github.com/user-attachments/assets/b5fbda91-3778-420c-a2e6-7939651250a8" /> | <img width="1080" height="2400" alt="ProfileEdit Movie App" src="https://github.com/user-attachments/assets/6e39e54e-1705-47d9-86b7-a4b6b9eee1de" />
+
+---
+
 ## Desenvolvido por:
 
 **Marcos Anacleto**
