@@ -1,6 +1,6 @@
 # 🎬 MovieApp - Android Nativo (Kotlin & XML)
 
-O **MovieApp** é um aplicativo Android nativo desenvolvido para consulta de catálogo de filmes, gerenciamento de perfis de usuário e sincronização de favoritos em tempo real. O projeto consome dados da API do **TMDB (The Movie Database)** e integra serviços do **Firebase**.
+O **MovieApp** é um aplicativo Android nativo desenvolvido para consulta de catálogo de filmes, gerenciamento de perfis de usuário e sincronização de favoritos em tempo real. O projeto consome dados da API do **TMDB (The Movie Database)** e integra serviços do **Firebase** e persistência local.
 
 ---
 
@@ -21,10 +21,11 @@ O projeto segue as recomendações oficiais do Google para desenvolvimento Andro
 - **Linguagem:** [Kotlin](https://kotlinlang.org/)
 - **Arquitetura:** Clean Architecture (Data, Domain, Presenter) + MVVM
 - **Injeção de Dependência:** Hilt / Dagger
-- **Asincronismo:** Kotlin Coroutines & Flow
+- **Asincronismo & Reatividade:** Kotlin Coroutines, Flow & LiveData
 - **Interface e Layouts:** XML, ViewBinding, Custom Views, ListAdapter + DiffUtil
 - **Comunicação Web:** Retrofit2 & OkHttp3
 - **Persistência e Backend:** 
+  - Room Database (Persistência Local)
   - Firebase Realtime Database
   - Firebase Storage
   - Firebase Authentication
@@ -37,11 +38,13 @@ O projeto segue as recomendações oficiais do Google para desenvolvimento Andro
 
 ```text
 com.example.movieapp/
-├── data/           # Repositórios, Mappers e Data Sources (Retrofit/Firebase)
+├── data/           # Repositórios, Mappers e Data Sources (Retrofit/Room/Firebase)
 ├── domain/         # Models e Use Cases
 ├── presenter/      # UI (Fragments, ViewModels, Adapters)
 └── util/           # Extensões, Helpers e StateView
+```
 
+---
 
 ## Desenvolvido por:
 
